@@ -41,7 +41,7 @@
       content: '';
       position: fixed;
       inset: 0;
-      border: 1px solid #ffffff;
+      border: 0px solid #ffffff;
       z-index: 400;
       pointer-events: none;
     }
@@ -81,7 +81,7 @@
     }
 
     .site-logo img {
-      height: 22px;
+      height: 18px;
       width: auto;
       display: block;
     }
@@ -139,7 +139,7 @@
 
     /* ─── Page header ───────────────────────── */
     .page-header {
-      padding: 0 52px 48px;
+      padding: 0 52px 8px;
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
@@ -187,7 +187,7 @@
       color: var(--text-muted);
       background: transparent;
       border: 1px solid rgba(234, 231, 225, 0.12);
-      padding: 7px 16px 6px;
+      padding: 7px 16px 7px;
       cursor: pointer;
       border-radius: 3px;
       transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
@@ -254,7 +254,7 @@
 
     /* ─── Project grid ───────────────────────── */
     .grid-wrap {
-      padding: 0 52px;
+      padding: 60px 52px 0px;
       opacity: 0;
       animation: fadeSlideUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
     }
@@ -534,8 +534,8 @@
       <ul class="nav">
         <li><a href="index.html" class="nav-link">Home</a></li>
         <li><a href="work.html"  class="nav-link active" aria-current="page">Work</a></li>
-        <li><a href="#"          class="nav-link">About</a></li>
-        <li><a href="#"          class="nav-link">Contact</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
       </ul>
     </nav>
   </header>
@@ -546,8 +546,8 @@
     <!-- Page header -->
     <div class="page-header">
       <div class="page-title-group">
-        <h1 class="page-title">Work</h1>
-        <span class="page-count">22 projects</span>
+        <!-- <h1 class="page-title">Work</h1> -->
+        <!-- <span class="page-count">22 projects</span> -->
       </div>
 
       <div style="display:flex;align-items:center;gap:16px;">

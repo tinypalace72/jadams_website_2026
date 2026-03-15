@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — John Adams Editor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,700;0,800;0,900;1,700&family=Barlow+Condensed:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg:         #080808;
+      --text:       #eae7e1;
+      --text-dim:   rgba(234, 231, 225, 0.5);
+      --text-muted: rgba(234, 231, 225, 0.28);
+      --accent:     #8da6b8;
+      --teal:       #3ec9c0;
+      --teal-dim:   rgba(62, 201, 192, 0.15);
+      --card-border: rgba(234, 231, 225, 0.08);
+    }
+
+    html {
+      background: var(--bg);
+      color: var(--text);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+    }
+
+    /* Viewport border */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      border: 1px solid #ffffff;
+      z-index: 400;
+      pointer-events: none;
+    }
+
+    /* Film grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      pointer-events: none;
+      opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 220px 220px;
+    }
+
+    /* ─── Header ────────────────────────────── */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 32px 52px;
+      background: linear-gradient(to bottom, rgba(8,8,8,0.88) 0%, transparent 100%);
+      opacity: 0;
+      animation: fadeSlideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+    }
+
+    .site-logo {
+      display: block;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .site-logo img {
+      height: 18px;
+      width: auto;
+      display: block;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      position: relative;
+      padding-bottom: 2px;
+      transition: color 0.25s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--teal);
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-link:hover { color: var(--text); }
+    .nav-link:hover::after { width: 100%; }
+
+    .nav-link.active {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .nav-link.active::after {
+      width: 100%;
+      background: var(--teal);
+    }
+
+    /* ─── Page shell ────────────────────────── */
+    .page {
+      padding-top: 0px;
+      padding-bottom: 80px;
+    }
+
+    /* ─── Hero split ────────────────────────── */
+    .about-hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      min-height: 54vh;
+      opacity: 0;
+      animation: fadeSlideUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
+    }
+
+    /* Photo column */
+    .about-photo-col {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-photo-wrap {
+      position: relative;
+      height: 100%;
+      min-height: 300px;
+    }
+
+    .about-photo {
+      width: 100%;
+      height: 85%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      filter: grayscale(18%);
+    }
+
+    /* Color grade over photo */
+    .about-photo-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, transparent 55%, var(--bg) 100%),
+        linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.5) 100%);
+      pointer-events: none;
+    }
+
+    /* Teal color treatment */
+    .about-photo-grade {
+      position: absolute;
+      inset: 0;
+      background: rgba(8, 20, 30, 0.18);
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+
+    /* Bio column */
+    .about-bio-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0px 52px 0px 64px;
+    }
+
+    .about-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 24px;
+    }
+
+    .about-name {
+      font-family: 'Barlow', sans-serif;
+      font-weight: 900;
+      font-size: clamp(42px, 4.8vw, 72px);
+      letter-spacing: -0.03em;
+      line-height: 1.0;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .about-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(20px, 2vw, 28px);
+      color: var(--text-dim);
+      margin-bottom: 40px;
+    }
+
+    .about-divider {
+      width: 48px;
+      height: 1px;
+      background: var(--teal);
+      margin-bottom: 36px;
+      opacity: 0.6;
+    }
+
+    .about-bio {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 300;
+      font-size: 18px;
+      line-height: 1.75;
+      color: var(--text-dim);
+      max-width: 480px;
+    }
+
+    .about-bio p + p {
+      margin-top: 20px;
+    }
+
+    .about-bio strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* ─── Stats row ──────────────────────────── */
+    .stats-row {
+      display: flex;
+      gap: 0;
+      padding: 30px 52px;
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+      margin: 0px 0 0;
+      opacity: 0;
+      animation: fadeSlideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.75s forwards;
+    }
+
+    .stat {
+      flex: 1;
+      padding: 0 40px;
+      border-right: 1px solid var(--card-border);
+    }
+
+    .stat:first-child { padding-left: 0; }
+    .stat:last-child  { padding-right: 0; border-right: none; }
+
+    .stat-number {
+      font-family: 'Barlow', sans-serif;
+      font-weight: 800;
+      font-size: clamp(36px, 4vw, 56px);
+      letter-spacing: -0.04em;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .stat-number span {
+      color: var(--teal);
+    }
+
+    .stat-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ─── Skills & tools ─────────────────────── */
+    .skills-section {
+      padding: 80px 52px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      opacity: 0;
+      animation: fadeSlideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
+    }
+
+    .skills-col-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 32px;
+    }
+
+    .skills-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .skills-list li {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 17px;
+      letter-spacing: 0.04em;
+      color: var(--text-dim);
+      padding: 14px 0;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: color 0.2s ease;
+    }
+
+    .skills-list li:first-child {
+      border-top: 1px solid var(--card-border);
+    }
+
+    .skills-list li:hover {
+      color: var(--text);
+    }
+
+    .skills-list li::after {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--teal);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .skills-list li:hover::after {
+      opacity: 0.6;
+    }
+
+    /* ─── Awards section ─────────────────────── */
+    .awards-section {
+      padding: 0 52px 80px;
+      opacity: 0;
+      animation: fadeSlideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.0s forwards;
+    }
+
+    .section-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 32px;
+    }
+
+    .awards-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .award-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: baseline;
+      gap: 24px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .award-text {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      letter-spacing: 0.03em;
+      color: var(--text-dim);
+    }
+
+    .award-text strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .award-year {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 300;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /* ─── CTA ────────────────────────────────── */
+    .about-cta {
+      padding: 60px 0px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      opacity: 0;
+      animation: fadeSlideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.1s forwards;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #ffffff;
+      background: transparent;
+      border: 1px solid rgba(234, 231, 225, 0.3);
+      padding: 13px 28px 12px;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      transition: color 2.0s ease, border-color 1.0s ease;
+    }
+
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--teal);
+      transform: translateX(-102%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: -1;
+    }
+
+    .cta-btn:hover {
+      color: #080808;
+      border-color: var(--teal);
+    }
+
+    .cta-btn:hover::before {
+      transform: translateX(0);
+    }
+
+    .cta-btn:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 3px;
+    }
+
+    .cta-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 13px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: color 0.25s ease;
+    }
+
+    .cta-btn-secondary:hover {
+      color: var(--text-dim);
+    }
+
+    /* ─── Keyframes ─────────────────────────── */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes fadeSlideDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── Responsive ─────────────────────────── */
+    @media (max-width: 900px) {
+      .header { padding: 24px 28px; }
+
+      .about-hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .about-photo-col { height: 55vw; }
+      .about-photo-wrap { min-height: unset; height: 100%; }
+      .about-photo-wrap::after {
+        background:
+          linear-gradient(to bottom, transparent 50%, var(--bg) 100%);
+      }
+
+      .about-bio-col {
+        padding: 40px 28px;
+      }
+
+      .stats-row {
+        padding: 40px 28px;
+        flex-wrap: wrap;
+        gap: 32px;
+      }
+
+      .stat {
+        flex: 1 1 40%;
+        padding: 0;
+        border-right: none;
+      }
+
+      .skills-section {
+        grid-template-columns: 1fr;
+        gap: 48px;
+        padding: 60px 28px;
+      }
+
+      .awards-section { padding: 0 28px 60px; }
+      .about-cta { padding: 0 28px 20px; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ───────────────────────────── -->
+  <header class="header">
+    <a href="index.html" class="site-logo" aria-label="John Adams Editor — Home">
+      <img src="assets/branding/logo-hor-03-uai-258x24.png" alt="John Adams Editor">
+    </a>
+
+    <nav aria-label="Primary navigation">
+      <ul class="nav">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="work.html"  class="nav-link">Work</a></li>
+        <li><a href="about.html" class="nav-link active" aria-current="page">About</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ── Main ─────────────────────────────── -->
+  <main class="page">
+
+    <!-- Hero split -->
+    <div class="about-hero">
+
+      <div class="about-photo-col">
+        <div class="about-photo-wrap">
+          <img class="about-photo" src="assets/branding/myFace4b.png" alt="John Adams, Editor">
+          <div class="about-photo-grade"></div>
+        </div>
+      </div>
+
+      <div class="about-bio-col">
+        <p class="about-eyebrow">Editor &nbsp;/&nbsp; Documentary &amp; Film</p>
+        <h1 class="about-name">John Adams</h1>
+        <p class="about-title">Vancouver-based picture editor</p>
+        <div class="about-divider"></div>
+        <div class="about-bio">
+          <p>
+            John is an award-nominated picture editor with over <strong>two decades of experience</strong> cutting documentary series, feature docs, narrative drama, and branded content for the world's leading broadcasters and streaming platforms.
+          </p>
+          <p>
+            His work spans a wide range of subjects — from <strong>wildlife and nature</strong> to true crime, historical docs, and music biography — with a consistent focus on <strong>character-driven storytelling</strong> and precise, purposeful rhythm in the edit.
+          </p>
+          <p>
+            Based in <strong>Vancouver, BC</strong>. Available for projects worldwide.
+          </p>
+
+          <!-- CTA -->
+          <div class="about-cta">
+            <a href="assets/resume/JohnAdams_Editor_CV.pdf" class="cta-btn" target="_blank" rel="noopener" aria-label="Download CV">
+              Download CV
+            </a>
+            <a href="contact.html" class="cta-btn-secondary">Get in touch &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Stats row -->
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-number">20<span>+</span></div>
+        <div class="stat-label">Years experience</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">22<span>+</span></div>
+        <div class="stat-label">Projects credited</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">8<span>+</span></div>
+        <div class="stat-label">Award nominations</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">12<span>+</span></div>
+        <div class="stat-label">Broadcasters &amp; platforms</div>
+      </div>
+    </div>
+
+    <!-- Skills & Tools -->
+    <div class="skills-section">
+
+      <div>
+        <p class="skills-col-label">Specialisms</p>
+        <ul class="skills-list">
+          <li>Documentary Series</li>
+          <li>Feature Documentaries</li>
+          <li>Narrative Drama</li>
+          <li>Comedy &amp; Lifestyle</li>
+          <li>Broadcast Commercials</li>
+          <li>Music Biography</li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="skills-col-label">Tools &amp; Software</p>
+        <ul class="skills-list">
+          <li>Avid Media Composer</li>
+          <li>Adobe Premiere Pro</li>
+          <li>DaVinci Resolve</li>
+          <li>Adobe After Effects</li>
+          <li>Pro Tools</li>
+          <li>Final Cut Pro</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Awards & Nominations -->
+    <div class="awards-section">
+      <p class="section-label">Awards &amp; Nominations</p>
+      <ul class="awards-list">
+        <li class="award-item">
+          <span class="award-text"><strong>Leo Award — Nominated</strong>, Best Documentary Series &nbsp;· The Age of AI</span>
+          <span class="award-year">2020</span>
+        </li>
+        <li class="award-item">
+          <span class="award-text"><strong>Leo Award — Nominated</strong>, Best Documentary Series &nbsp;· Wild Bear Rescue</span>
+          <span class="award-year">2019</span>
+        </li>
+        <li class="award-item">
+          <span class="award-text"><strong>Leo Award — Winner</strong>, Best Sound Editing &nbsp;· Working People</span>
+          <span class="award-year">2018</span>
+        </li>
+        <li class="award-item">
+          <span class="award-text"><strong>Leo Award — Nominated</strong>, Best Documentary Series &nbsp;· Working People</span>
+          <span class="award-year">2018</span>
+        </li>
+        <li class="award-item">
+          <span class="award-text"><strong>Leo Award — Nominated</strong>, Best Reality or Lifestyle Series &nbsp;· The Dog Dudes</span>
+          <span class="award-year">2017</span>
+        </li>
+        <li class="award-item">
+          <span class="award-text"><strong>CCE Award — Nominated</strong>, Best Documentary Series &nbsp;· Paramedics: Life on the Line</span>
+          <span class="award-year">2016</span>
+        </li>
+        <li class="award-item">
+          <span class="award-text"><strong>CSA Award — Nominated</strong>, Best Factual Program &nbsp;· This Is High School</span>
+          <span class="award-year">2014</span>
+        </li>
+        <li class="award-item">
+          <span class="award-text"><strong>Berlin PunkFilmFest — Audience Choice Award</strong> &nbsp;· Bloodied But Unbowed: Uncut</span>
+          <span class="award-year">2012</span>
+        </li>
+      </ul>
+    </div>
+
+    
+
+  </main>
+
+</body>
+</html>

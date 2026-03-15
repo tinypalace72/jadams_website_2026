@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — John Adams Editor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,700;0,800;0,900;1,700&family=Barlow+Condensed:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg:         #080808;
+      --text:       #eae7e1;
+      --text-dim:   rgba(234, 231, 225, 0.5);
+      --text-muted: rgba(234, 231, 225, 0.28);
+      --accent:     #8da6b8;
+      --teal:       #3ec9c0;
+      --teal-dim:   rgba(62, 201, 192, 0.15);
+      --card-border: rgba(234, 231, 225, 0.08);
+    }
+
+    html {
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+    }
+
+    /* Viewport border */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      border: 1px solid #ffffff;
+      z-index: 400;
+      pointer-events: none;
+    }
+
+    /* Film grain */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      pointer-events: none;
+      opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 220px 220px;
+    }
+
+    /* ─── Header ────────────────────────────── */
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 32px 52px;
+      background: linear-gradient(to bottom, rgba(8,8,8,0.88) 0%, transparent 100%);
+      opacity: 0;
+      animation: fadeSlideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+    }
+
+    .site-logo { display: block; text-decoration: none; flex-shrink: 0; }
+    .site-logo img { height: 18px; width: auto; display: block; }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      position: relative;
+      padding-bottom: 2px;
+      transition: color 0.25s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: var(--teal);
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-link:hover { color: var(--text); }
+    .nav-link:hover::after { width: 100%; }
+
+    .nav-link.active { color: var(--text); font-weight: 500; }
+    .nav-link.active::after { width: 100%; background: var(--teal); }
+
+    /* ─── Page layout ────────────────────────── */
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 96px;
+    }
+
+    /* ─── Left panel ─────────────────────────── */
+    .contact-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 72px 80px 52px;
+      border-right: 1px solid var(--card-border);
+      opacity: 0;
+      animation: fadeSlideUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+    }
+
+    .contact-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 28px;
+    }
+
+    .contact-heading {
+      font-family: 'Barlow', sans-serif;
+      font-weight: 900;
+      font-size: clamp(48px, 5.5vw, 80px);
+      letter-spacing: -0.03em;
+      line-height: 0.95;
+      color: var(--text);
+      margin-bottom: 36px;
+    }
+
+    .contact-heading em {
+      font-style: italic;
+      font-weight: 700;
+      color: var(--text-dim);
+    }
+
+    .contact-intro {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 20px;
+      line-height: 1.65;
+      color: var(--text-dim);
+      max-width: 360px;
+      margin-bottom: 56px;
+    }
+
+    /* Direct contact details */
+    .contact-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .contact-detail {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .contact-detail-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .contact-detail-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      letter-spacing: 0.04em;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    a.contact-detail-value:hover {
+      color: var(--teal);
+    }
+
+    /* ─── Right panel — form ─────────────────── */
+    .contact-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 52px 80px 72px;
+      opacity: 0;
+      animation: fadeSlideUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+    }
+
+    .form-label-top {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 36px;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* Field groups */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 0;
+      margin-bottom: 32px;
+      position: relative;
+    }
+
+    .form-field label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      transition: color 0.2s ease;
+    }
+
+    .form-field:focus-within label {
+      color: var(--teal);
+    }
+
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 17px;
+      letter-spacing: 0.03em;
+      color: var(--text);
+      width: 100%;
+      padding: 0 0 14px;
+      caret-color: var(--teal);
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .form-field select {
+      cursor: pointer;
+    }
+
+    .form-field select option {
+      background: #111;
+      color: var(--text);
+    }
+
+    .form-field textarea {
+      resize: none;
+      height: 120px;
+      line-height: 1.65;
+    }
+
+    .form-field input::placeholder,
+    .form-field textarea::placeholder {
+      color: rgba(234, 231, 225, 0.18);
+    }
+
+    /* Animated underline on focus */
+    .form-field::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--teal);
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .form-field:focus-within::after {
+      width: 100%;
+    }
+
+    /* Select arrow */
+    .select-wrap {
+      position: relative;
+    }
+
+    .select-wrap::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      bottom: 18px;
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid var(--text-muted);
+      pointer-events: none;
+      transition: border-top-color 0.2s ease;
+    }
+
+    .form-field:focus-within .select-wrap::after {
+      border-top-color: var(--teal);
+    }
+
+    /* Submit */
+    .form-submit-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+
+    .form-note {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 300;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .submit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #ffffff;
+      background: transparent;
+      border: 1px solid rgba(234, 231, 225, 0.3);
+      padding: 13px 28px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--teal);
+      transform: translateX(-102%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: -1;
+    }
+
+    .submit-btn:hover {
+      color: #080808;
+      border-color: var(--teal);
+    }
+
+    .submit-btn:hover::before {
+      transform: translateX(0);
+    }
+
+    .submit-btn:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 3px;
+    }
+
+    .submit-btn:active {
+      opacity: 0.85;
+    }
+
+    /* ─── Success state ───────────────────────── */
+    .form-success {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      padding: 40px 0;
+    }
+
+    .form-success.visible {
+      display: flex;
+    }
+
+    .success-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .success-icon svg {
+      stroke: var(--teal);
+    }
+
+    .success-heading {
+      font-family: 'Barlow', sans-serif;
+      font-weight: 800;
+      font-size: 28px;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .success-body {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 300;
+      font-size: 17px;
+      line-height: 1.65;
+      color: var(--text-dim);
+    }
+
+    /* ─── Keyframes ─────────────────────────── */
+    @keyframes fadeSlideDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── Responsive ─────────────────────────── */
+    @media (max-width: 900px) {
+      .header { padding: 24px 28px; }
+
+      .page {
+        grid-template-columns: 1fr;
+        padding-top: 88px;
+      }
+
+      .contact-left {
+        padding: 52px 28px 48px;
+        border-right: none;
+        border-bottom: 1px solid var(--card-border);
+      }
+
+      .contact-right {
+        padding: 52px 28px 80px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .form-submit-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ───────────────────────────── -->
+  <header class="header">
+    <a href="index.html" class="site-logo" aria-label="John Adams Editor — Home">
+      <img src="assets/branding/logo-hor-03-uai-258x24.png" alt="John Adams Editor">
+    </a>
+    <nav aria-label="Primary navigation">
+      <ul class="nav">
+        <li><a href="index.html"   class="nav-link">Home</a></li>
+        <li><a href="work.html"    class="nav-link">Work</a></li>
+        <li><a href="about.html"   class="nav-link">About</a></li>
+        <li><a href="contact.html" class="nav-link active" aria-current="page">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ── Main ─────────────────────────────── -->
+  <main class="page">
+
+    <!-- Left: info -->
+    <div class="contact-left">
+      <p class="contact-eyebrow">Get in touch</p>
+      <h1 class="contact-heading">Let's make<br><em>something</em><br>great.</h1>
+      <p class="contact-intro">
+        Available for documentary series, feature docs, narrative projects, and branded content. Based in Vancouver — working worldwide.
+      </p>
+
+      <div class="contact-details">
+        <div class="contact-detail">
+          <span class="contact-detail-label">Email</span>
+          <a href="mailto:hello@johnadamseditor.com" class="contact-detail-value">hello@johnadamseditor.com</a>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-label">Based in</span>
+          <span class="contact-detail-value">Vancouver, BC, Canada</span>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-label">IMDb</span>
+          <a href="http://www.imdb.com/name/nm3958377/" class="contact-detail-value" target="_blank" rel="noopener">nm3958377</a>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-label">Availability</span>
+          <span class="contact-detail-value">Open to new projects</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: form -->
+    <div class="contact-right">
+      <p class="form-label-top">Send a message</p>
+
+      <form class="contact-form" id="contactForm" novalidate>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="name">Your name</label>
+            <input type="text" id="name" name="name" placeholder="Jane Smith" autocomplete="name" required>
+          </div>
+          <div class="form-field">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" placeholder="jane@studio.com" autocomplete="email" required>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="project-type">Project type</label>
+          <div class="select-wrap">
+            <select id="project-type" name="project_type">
+              <option value="" disabled selected>Select a category</option>
+              <option value="doc-series">Documentary Series</option>
+              <option value="doc-feature">Documentary Feature</option>
+              <option value="narrative">Narrative Drama</option>
+              <option value="comedy">Comedy / Lifestyle</option>
+              <option value="commercial">Commercial / Branded</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="message">Tell me about the project</label>
+          <textarea id="message" name="message" placeholder="A brief description — genre, length, timeline, what you're looking for…" required></textarea>
+        </div>
+
+        <div class="form-submit-row">
+          <span class="form-note">I'll respond within 48 hours.</span>
+          <button type="submit" class="submit-btn">Send message</button>
+        </div>
+
+      </form>
+
+      <div class="form-success" id="formSuccess" aria-live="polite">
+        <div class="success-icon">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 9 7 13 15 5"/>
+          </svg>
+        </div>
+        <p class="success-heading">Message sent.</p>
+        <p class="success-body">Thanks for reaching out — I'll be in touch within 48 hours.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      this.style.transition = 'opacity 0.3s ease';
+      this.style.opacity = '0';
+      setTimeout(() => {
+        this.style.display = 'none';
+        const success = document.getElementById('formSuccess');
+        success.classList.add('visible');
+        success.style.opacity = '0';
+        success.style.transition = 'opacity 0.5s ease';
+        requestAnimationFrame(() => { success.style.opacity = '1'; });
+      }, 300);
+    });
+  </script>
+
+</body>
+</html>
