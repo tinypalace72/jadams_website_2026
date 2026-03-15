@@ -485,6 +485,240 @@
     .card:nth-child(21) { animation-delay: 1.80s; }
     .card:nth-child(22) { animation-delay: 1.86s; }
 
+    /* ─── Modal ──────────────────────────────── */
+    .project-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      padding: 24px;
+      background: transparent;
+      border: none;
+      outline: none;
+      width: 100%;
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .project-modal[open] {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: modalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .project-modal::backdrop {
+      background: rgba(4, 4, 4, 0.88);
+      backdrop-filter: blur(6px);
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .modal-inner {
+      position: relative;
+      background: #0e0e0e;
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      width: 100%;
+      max-width: 860px;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: modalSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes modalSlideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      z-index: 10;
+      background: rgba(234, 231, 225, 0.06);
+      border: 1px solid var(--card-border);
+      border-radius: 3px;
+      color: var(--text-muted);
+      font-size: 18px;
+      line-height: 1;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .modal-close:hover {
+      color: var(--text);
+      background: rgba(234, 231, 225, 0.1);
+      border-color: rgba(234, 231, 225, 0.2);
+    }
+
+    .modal-close:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 3px;
+    }
+
+    .modal-header {
+      padding: 28px 32px 20px;
+    }
+
+    .modal-eyebrow {
+      display: block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 10px;
+    }
+
+    .modal-title {
+      font-family: 'Barlow', sans-serif;
+      font-weight: 900;
+      font-size: clamp(22px, 3vw, 34px);
+      letter-spacing: -0.025em;
+      line-height: 1.05;
+      color: var(--text);
+    }
+
+    /* Video placeholder */
+    .modal-video {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #111;
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .modal-video::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(62, 201, 192, 0.04) 0%, transparent 70%);
+    }
+
+    .modal-play-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1px solid rgba(62, 201, 192, 0.35);
+      background: rgba(62, 201, 192, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .modal-play-btn svg {
+      margin-left: 3px;
+    }
+
+    .modal-video iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .modal-video img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .modal-video-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Production info grid */
+    .modal-info {
+      padding: 28px 32px 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .modal-info-item {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .modal-info-item:nth-child(odd)  { padding-right: 32px; }
+    .modal-info-item:nth-child(even) { padding-left: 32px; border-left: 1px solid var(--card-border); }
+
+    /* Remove bottom border from last two items */
+    .modal-info-item:nth-last-child(-n+2) { border-bottom: none; }
+
+    .modal-info-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .modal-info-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 15px;
+      letter-spacing: 0.03em;
+      color: var(--text-dim);
+    }
+
+    .modal-info-value strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Cards with modals get a subtle indicator */
+    .card[data-modal]::before {
+      content: '';
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+      opacity: 0;
+      z-index: 2;
+      transition: opacity 0.3s ease;
+    }
+
+    .card[data-modal]:hover::before {
+      opacity: 0.8;
+    }
+
     /* ─── Keyframes ─────────────────────────── */
     @keyframes fadeIn {
       from { opacity: 0; }
@@ -576,7 +810,7 @@
     <div class="grid-wrap">
       <div class="project-grid">
 
-        <article class="card card--s6" data-category="doc-series" tabindex="0" aria-label="Scammed: Getting Even">
+        <article class="card card--s6" data-category="doc-series" data-modal="scammed" tabindex="0" aria-label="Scammed: Getting Even">
           <img class="card-img" src="assets/images/work/Scammed_poster.jpg" alt="Scammed: Getting Even">
           <div class="card-grade"></div>
           <div class="card-overlay"></div>
@@ -588,7 +822,7 @@
           </div>
         </article>
 
-        <article class="card card--s6" data-category="doc-series" tabindex="0" aria-label="Ice Road Truckers">
+        <article class="card card--s6" data-category="doc-series" data-modal="ice-road-truckers" tabindex="0" aria-label="Ice Road Truckers">
           <img class="card-img" src="assets/images/work/IceRoadTruckers_poster.jpg" alt="Ice Road Truckers">
           <div class="card-grade"></div>
           <div class="card-overlay"></div>
@@ -600,7 +834,7 @@
           </div>
         </article>
 
-        <article class="card card--s4" data-category="doc-features" tabindex="0" aria-label="Have You Heard Judi Singh?">
+        <article class="card card--s4" data-category="doc-features" data-modal="judi-singh" tabindex="0" aria-label="Have You Heard Judi Singh?">
           <img class="card-img" src="assets/images/work/HYHJS_poster.jpg" alt="Have You Heard Judi Singh?">
           <div class="card-grade"></div>
           <div class="card-overlay"></div>
@@ -612,7 +846,7 @@
           </div>
         </article>
 
-        <article class="card card--s4" data-category="doc-series" tabindex="0" aria-label="Shared Planet">
+        <article class="card card--s4" data-category="doc-series" data-modal="shared-planet" tabindex="0" aria-label="Shared Planet">
           <img class="card-img" src="assets/images/work/SharedPlanet_poster.jpg" alt="Shared Planet">
           <div class="card-grade"></div>
           <div class="card-overlay"></div>
@@ -628,13 +862,13 @@
           </div>
         </article>
 
-        <article class="card card--s4" data-category="doc-series" tabindex="0" aria-label="The Age of AI">
+        <article class="card card--s4" data-category="doc-series" data-modal="age-of-ai" tabindex="0" aria-label="The Age of AI">
           <img class="card-img" src="assets/images/work/AgeOfAI_poster.jpg" alt="The Age of AI">
           <div class="card-grade"></div>
           <div class="card-overlay"></div>
           <span class="card-badge">Tech Doc Series</span>
           <div class="card-content">
-            <img class="card-network" src="assets/images/logos/Logo_Youtube.png" alt="YouTube">
+            <img class="card-network" src="assets/images/logos/Logo_Youtube.png" alt="YouTube" style="height:30px;">
             <h2 class="card-title">The Age of AI</h2>
             <p class="card-desc">YouTube Originals. Leo-Nominated, Best Doc Series. Charting AI's transformation of human life.</p>
           </div>
@@ -670,7 +904,7 @@
           <div class="card-overlay"></div>
           <span class="card-badge">Occupational Doc Series</span>
           <div class="card-content">
-            <img class="card-network" src="assets/images/logos/Logo_Netflix.png" alt="Netflix">
+            <img class="card-network" src="assets/images/logos/Logo_Netflix.png" alt="Netflix" style="height:30px;">
             <h2 class="card-title">Big Timber</h2>
             <p class="card-desc">Netflix &amp; History Channel. Deep in the old-growth forests of BC with the loggers who risk everything.</p>
           </div>
@@ -818,7 +1052,7 @@
           <div class="card-overlay"></div>
           <span class="card-badge">Broadcast Ad · Video Game</span>
           <div class="card-content">
-            <img class="card-network" src="assets/images/logos/Logo_DDB.png" alt="DDB">
+            <img class="card-network" src="assets/images/logos/Logo_DDB.png" alt="DDB" style="height:40px;">
             <h2 class="card-title">Deus Ex: Human Revolution</h2>
             <p class="card-desc">Broadcast commercial. Square Enix &amp; Eidos Montréal. Launch campaign for the acclaimed action RPG.</p>
           </div>
@@ -852,9 +1086,168 @@
 
   </main>
 
+  <!-- ── Project Modal ───────────────────── -->
+  <dialog class="project-modal" id="project-modal" aria-modal="true" aria-labelledby="modal-title-text">
+    <div class="modal-inner">
+      <button class="modal-close" id="modal-close" aria-label="Close">&#x2715;</button>
+      <div class="modal-header">
+        <span class="modal-eyebrow" id="modal-eyebrow"></span>
+        <h2 class="modal-title" id="modal-title-text"></h2>
+      </div>
+      <div class="modal-video" id="modal-media"></div>
+      <div class="modal-info" id="modal-info"></div>
+    </div>
+  </dialog>
+
   <script>
     const tabs  = document.querySelectorAll('.filter-tab');
     const cards = [...document.querySelectorAll('.card[data-category]')];
+
+    // ── Modal data ──────────────────────────────────────────────────
+    const modalData = {
+      'scammed': {
+        eyebrow: 'Tech Crime · Documentary Series',
+        title:   'Scammed: Getting Even',
+        video: 'https://www.youtube.com/embed/4QrkA8qnaO4?si=botmc_a1-Twglj-g',
+        info: [
+          { label: 'Genre',              value: 'Tech Crime Documentary Series' },
+          { label: 'Broadcaster',        value: '<strong>Fox Nation</strong>' },
+          { label: 'Season',             value: 'Season 1' },
+          { label: 'Production Company', value: 'Placeholder Productions' },
+          { label: 'Director',           value: 'Placeholder Director' },
+          { label: 'Showrunner',         value: 'Placeholder Showrunner' },
+          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
+          { label: 'Year',               value: '2023' },
+        ]
+      },
+      'ice-road-truckers': {
+        eyebrow: 'Adventure · Documentary Series',
+        title:   'Ice Road Truckers',
+        poster: 'assets/images/work/IceRoadTruckers_poster.jpg',
+        // video: 'https://www.youtube.com/embed/XuyaqEcxCek?si=lnkevPnAxnN2NivL',
+        info: [
+          { label: 'Genre',              value: 'Adventure Documentary Series' },
+          { label: 'Broadcaster',        value: '<strong>History Channel</strong>' },
+          { label: 'Season',             value: 'Season 12' },
+          { label: 'Production Company', value: 'Original Productions' },
+          { label: 'Director',           value: 'Placeholder Director' },
+          { label: 'Showrunner',         value: 'Placeholder Showrunner' },
+          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
+          { label: 'Year',               value: '2022' },
+        ]
+      },
+      'judi-singh': {
+        video: 'https://www.youtube.com/embed/11E7OB5Xbts?si=m6uHfcoLtnki8UaL',
+        eyebrow: 'Feature Music Biography',
+        title:   'Have You Heard Judi Singh?',
+        info: [
+          { label: 'Genre',              value: 'Music Biography' },
+          { label: 'Broadcaster',        value: '<strong>Knowledge Network</strong>' },
+          { label: 'Format',             value: 'Feature Film' },
+          { label: 'Production Company', value: 'Vivamantra Films' },
+          { label: 'Director',           value: 'Baljit Singh' },
+          { label: 'Producer',           value: 'Brishkay Ahmed' },
+          { label: 'Role',               value: '<strong>Picture Editor, Co-Writer, Motion Graphics</strong>' },
+          { label: 'Year',               value: '2025' },
+        ]
+      },
+      'shared-planet': {
+        eyebrow: 'Nature · Mini Series',
+        title:   'Shared Planet',
+        video: 'https://player.vimeo.com/video/1037987157',
+        info: [
+          { label: 'Genre',              value: 'Nature Documentary Series' },
+          { label: 'Broadcasters',       value: '<strong>CBC · PBS · Arte</strong>' },
+          { label: 'Format',             value: 'Mini Series' },
+          { label: 'Production Company', value: 'Placeholder Productions' },
+          { label: 'Director',           value: 'Placeholder Director' },
+          { label: 'Showrunner',         value: 'Placeholder Showrunner' },
+          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
+          { label: 'Year',               value: 'Placeholder Year' },
+        ]
+      },
+      'age-of-ai': {
+        eyebrow: 'Tech · Documentary Series',
+        title:   'The Age of AI',
+        info: [
+          { label: 'Genre',              value: 'Technology Documentary Series' },
+          { label: 'Broadcaster',        value: '<strong>YouTube Originals</strong>' },
+          { label: 'Format',             value: 'Documentary Series' },
+          { label: 'Production Company', value: 'Placeholder Productions' },
+          { label: 'Director',           value: 'Placeholder Director' },
+          { label: 'Showrunner',         value: 'Placeholder Showrunner' },
+          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
+          { label: 'Year',               value: '2019–2020' },
+        ]
+      }
+    };
+
+    // ── Modal open/close ────────────────────────────────────────────
+    const modal      = document.getElementById('project-modal');
+    const modalClose = document.getElementById('modal-close');
+
+    function openModal(key) {
+      const data = modalData[key];
+      if (!data) return;
+
+      document.getElementById('modal-eyebrow').textContent    = data.eyebrow;
+      document.getElementById('modal-title-text').textContent = data.title;
+
+      const mediaEl = document.getElementById('modal-media');
+      if (data.video) {
+        mediaEl.innerHTML = `<iframe src="${data.video}" allowfullscreen allow="autoplay; fullscreen"></iframe>`;
+      } else if (data.poster) {
+        mediaEl.innerHTML = `<img src="${data.poster}" alt="${data.title}">`;
+      } else {
+        mediaEl.innerHTML = `
+          <div class="modal-play-btn" aria-hidden="true">
+            <svg width="16" height="18" viewBox="0 0 16 18" fill="none">
+              <path d="M1 1.5L15 9L1 16.5V1.5Z" stroke="rgba(62,201,192,0.7)" stroke-width="1.5" stroke-linejoin="round" fill="rgba(62,201,192,0.15)"/>
+            </svg>
+          </div>
+          <span class="modal-video-label">Clip coming soon</span>`;
+      }
+
+      const infoEl = document.getElementById('modal-info');
+      infoEl.innerHTML = data.info.map(item => `
+        <div class="modal-info-item">
+          <span class="modal-info-label">${item.label}</span>
+          <span class="modal-info-value">${item.value}</span>
+        </div>
+      `).join('');
+
+      modal.showModal();
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      // Remove iframe src on close so video stops playing
+      document.getElementById('modal-media').innerHTML = '';
+      modal.close();
+      document.body.style.overflow = '';
+    }
+
+    modalClose.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', e => {
+      if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && modal.open) closeModal();
+    });
+
+    // Attach to modal cards
+    document.querySelectorAll('.card[data-modal]').forEach(card => {
+      card.addEventListener('click', () => openModal(card.dataset.modal));
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openModal(card.dataset.modal);
+        }
+      });
+    });
+    // ── End modal ───────────────────────────────────────────────────
 
     // Once load animations settle, hand off opacity/transform control to JS
     setTimeout(() => {

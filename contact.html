@@ -114,7 +114,7 @@
       min-height: 100vh;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      padding-top: 96px;
+      padding-top: 0px;
     }
 
     /* ─── Left panel ─────────────────────────── */
@@ -122,8 +122,8 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 80px 72px 80px 52px;
-      border-right: 1px solid var(--card-border);
+      padding: 170px 72px 80px 52px;
+      /* border-right: 1px solid var(--card-border); */
       opacity: 0;
       animation: fadeSlideUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
     }
@@ -211,9 +211,28 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 80px 52px 80px 72px;
+      padding: 0px 52px 80px 72px;
       opacity: 0;
       animation: fadeSlideUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+      position: relative;
+    }
+
+    .contact-right::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('assets/images/VolcanoChoir-rogue-wave-785x393.jpg');
+      /* background-image: url('assets/images/jadams_spitfire.JPG'); */
+      background-size: cover;
+      background-position: center;
+      opacity: 0.42;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .contact-right > * {
+      position: relative;
+      z-index: 1;
     }
 
     .form-label-top {
@@ -513,7 +532,7 @@
     <!-- Left: info -->
     <div class="contact-left">
       <p class="contact-eyebrow">Get in touch</p>
-      <h1 class="contact-heading">Let's tell<br><em>a tale</em><br>or two.</h1>
+      <h1 class="contact-heading">Let's tell<br>a tale.</h1>
       <p class="contact-intro">
         Available for documentary series, feature docs, narrative projects, and branded content. Based in Vancouver — working worldwide.
       </p>
