@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>John Adams — Editor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@700&family=Barlow+Condensed:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --sidebar-width: 224px;
+      --bg:           #080808;
+      --sidebar:      #0d0d0d;
+      --border:       rgba(255, 255, 255, 0.065);
+      --text:         #eae7e1;
+      --text-dim:     rgba(234, 231, 225, 0.44);
+      --text-muted:   rgba(234, 231, 225, 0.22);
+      --accent:       #8da6b8;
+      --accent-glow:  rgba(141, 166, 184, 0.18);
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    /* Grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      pointer-events: none;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 220px 220px;
+    }
+
+    /* ─── Layout ─────────────────────────────── */
+    .layout {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    /* ─── Sidebar ────────────────────────────── */
+    .sidebar {
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: var(--sidebar);
+      display: flex;
+      flex-direction: column;
+      padding: 44px 36px 40px;
+      position: relative;
+      z-index: 10;
+      flex-shrink: 0;
+    }
+
+
+    /* Logo */
+    .logo {
+      display: block;
+      margin-bottom: 56px;
+      opacity: 0;
+      animation: fadeSlideDown 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+    }
+
+    .logo img {
+      width: 100%;
+      max-width: 164px;
+      height: auto;
+      display: block;
+      /* logo is white — show as-is on dark background */
+    }
+
+    /* Nav */
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .nav-item {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+
+    .nav-item:nth-child(1) { animation: slideIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards; }
+    .nav-item:nth-child(2) { animation: slideIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards; }
+    .nav-item:nth-child(3) { animation: slideIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards; }
+    .nav-item:nth-child(4) { animation: slideIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.75s forwards; }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-dim);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 11px 0;
+      position: relative;
+      transition: color 0.25s ease;
+    }
+
+    /* Tick mark before nav items */
+    .nav-link::before {
+      content: '';
+      display: block;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--text);
+    }
+
+    .nav-link.active {
+      font-weight: 500;
+    }
+
+    .nav-link:hover::before,
+    .nav-link.active::before {
+      width: 18px;
+    }
+
+    /* Spacer */
+    .spacer { flex: 1; }
+
+    /* Sidebar footer */
+    .sidebar-footer {
+      opacity: 0;
+      animation: fadeIn 0.7s ease 1.0s forwards;
+    }
+
+    .sidebar-footer p {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 300;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    /* ─── Main Content ────────────────────────── */
+    .main {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Background image / video */
+    .bg-media {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      animation: fadeIn 1.6s ease 0.2s forwards;
+    }
+
+    .bg-media img,
+    .bg-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 45%;
+    }
+
+    /* Vignette */
+    .overlay-vignette {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 55% 50%, transparent 30%, rgba(0,0,0,0.78) 100%),
+        linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, transparent 30%, transparent 65%, rgba(0,0,0,0.55) 100%);
+      pointer-events: none;
+    }
+
+    /* Left fade — bleeds into sidebar */
+    .overlay-left {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(13,13,13,0.72) 0%, transparent 32%);
+      pointer-events: none;
+    }
+
+    /* Color grade — cool tint */
+    .overlay-grade {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 25, 35, 0.18);
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+
+    /* ─── Play Button ─────────────────────────── */
+    .play-wrap {
+      position: absolute;
+      bottom: 80px;
+      left: 52px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      opacity: 0;
+      animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.3s forwards;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .play-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 1px solid rgba(234, 231, 225, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: rgba(8, 8, 8, 0.25);
+      backdrop-filter: blur(6px);
+      transition: border-color 0.35s ease;
+      flex-shrink: 0;
+    }
+
+    /* Expanding ring on hover */
+    .play-btn::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 50%;
+      border: 1px solid transparent;
+      transition: inset 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+    }
+
+    .play-wrap:hover .play-btn {
+      border-color: rgba(141, 166, 184, 0.5);
+    }
+
+    .play-wrap:hover .play-btn::before {
+      inset: -10px;
+      border-color: rgba(141, 166, 184, 0.2);
+    }
+
+    /* Triangle icon */
+    .play-icon {
+      width: 0;
+      height: 0;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-left: 14px solid var(--text);
+      margin-left: 4px;
+      transition: border-left-color 0.3s ease;
+    }
+
+    .play-wrap:hover .play-icon {
+      border-left-color: var(--accent);
+    }
+
+    .play-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .play-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 500;
+      font-size: 10.5px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .play-sublabel {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 300;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+
+    /* ─── Tagline ────────────────────────────── */
+    .tagline {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      animation: fadeIn 1.2s ease 1.0s forwards;
+      white-space: nowrap;
+    }
+
+    .tagline-text {
+      font-family: 'Barlow', sans-serif;
+      font-style: normal;
+      font-weight: 700;
+      font-size: clamp(44px, 5.8vw, 90px);
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      line-height: 1.08;
+      text-shadow:
+        0 4px 48px rgba(0, 0, 0, 0.55),
+        0 1px 10px rgba(0, 0, 0, 0.35);
+    }
+
+    .tagline-sub {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.62);
+      margin-top: 22px;
+    }
+
+    /* ─── Logo strip ─────────────────────────── */
+    .logo-strip {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 36px;
+      padding: 20px 60px 24px;
+      background: linear-gradient(to top, rgba(0,0,0,0.52) 0%, transparent 100%);
+      opacity: 0;
+      animation: fadeIn 0.9s ease 1.4s forwards;
+    }
+
+    .logo-strip img {
+      height: 40px;
+      width: auto;
+      filter: brightness(0) invert(1);
+      opacity: 0.45;
+      transition: opacity 0.25s ease;
+      flex-shrink: 0;
+    }
+
+    .logo-strip img:hover {
+      opacity: 0.85;
+    }
+
+    /* ─── Vertical scroll indicator ─────────── */
+    .scroll-indicator {
+      position: absolute;
+      top: 50%;
+      right: 36px;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      animation: fadeIn 0.8s ease 1.2s forwards;
+    }
+
+    .scroll-indicator span {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 300;
+      font-size: 8.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(234, 231, 225, 0.28);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 44px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      opacity: 0.5;
+      animation: breathe 2.4s ease-in-out 2s infinite;
+    }
+
+    @keyframes breathe {
+      0%, 100% { opacity: 0.25; transform: scaleY(1); }
+      50%       { opacity: 0.6;  transform: scaleY(1.05); }
+    }
+
+    /* ─── Keyframes ──────────────────────────── */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes fadeSlideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+
+    <!-- ── Sidebar ───────────────────────────── -->
+    <aside class="sidebar">
+      <a href="#" class="logo" aria-label="John Adams Editor — Home">
+        <img src="../Assets/Branding/logo-hor-03-uai-258x24.png" alt="John Adams Editor">
+      </a>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <div class="nav-item">
+          <a href="#" class="nav-link active" aria-current="page">Home</a>
+        </div>
+        <div class="nav-item">
+          <a href="#" class="nav-link">Work</a>
+        </div>
+        <div class="nav-item">
+          <a href="#" class="nav-link">About</a>
+        </div>
+        <div class="nav-item">
+          <a href="#" class="nav-link">Contact</a>
+        </div>
+      </nav>
+
+      <div class="spacer"></div>
+
+      <div class="sidebar-footer">
+        <p>Film &amp; Television<br>Editor</p>
+      </div>
+    </aside>
+
+    <!-- ── Main ──────────────────────────────── -->
+    <main class="main">
+
+      <!-- Background (swap <img> for <video autoplay muted loop playsinline> when ready) -->
+      <div class="bg-media">
+        <video autoplay muted loop playsinline src="../Assets/Video/bgvid.mp4"></video>
+      </div>
+
+      <!-- Overlays -->
+      <div class="overlay-vignette"></div>
+      <div class="overlay-left"></div>
+      <div class="overlay-grade"></div>
+
+      <!-- Tagline -->
+      <div class="tagline">
+        <p class="tagline-text">Editor with<br>tales to tell.</p>
+        <p class="tagline-sub">Documentary &nbsp;|&nbsp; Film &amp; TV</p>
+      </div>
+
+      <!-- Play reel -->
+      <!--
+      <a href="#" class="play-wrap" aria-label="Watch showreel">
+        <div class="play-btn">
+          <div class="play-icon"></div>
+        </div>
+        <div class="play-meta">
+          <span class="play-label">Watch Reel</span>
+          <span class="play-sublabel">2024 — 2025</span>
+        </div>
+      </a>
+      -->
+
+      <!-- Scroll / explore indicator -->
+      <div class="scroll-indicator" aria-hidden="true">
+        <span>Explore</span>
+        <div class="scroll-line"></div>
+      </div>
+
+      <!-- Logo strip -->
+      <div class="logo-strip" aria-label="Selected credits">
+        <img src="../Assets/Logos_web/Logo_PBS.png"          alt="PBS">
+        <img src="../Assets/Logos_web/Logo_Netflix.png"      alt="Netflix">
+        <img src="../Assets/Logos_web/Logo_NatGeo.png"       alt="National Geographic">
+        <img src="../Assets/Logos_web/Logo_Discovery.png"    alt="Discovery Channel">
+        <img src="../Assets/Logos_web/Logo_AnimalPlanet.png" alt="Animal Planet">
+        <img src="../Assets/Logos_web/Knowledge_K_blk.png"   alt="Knowledge">
+        <img src="../Assets/Logos_web/Logo_Arte.png"         alt="Arte">
+        <img src="../Assets/Logos_web/Logo_HistoryChannel.png" alt="History Channel">
+        <img src="../Assets/Logos_web/Logo_DDB.png"          alt="DDB">
+      </div>
+
+    </main>
+  </div>
+
+</body>
+</html>

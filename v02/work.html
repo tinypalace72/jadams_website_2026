@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work — John Adams Editor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,700;0,800;0,900;1,700&family=Barlow+Condensed:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg:         #080808;
+      --text:       #eae7e1;
+      --text-dim:   rgba(234, 231, 225, 0.5);
+      --text-muted: rgba(234, 231, 225, 0.28);
+      --accent:     #8da6b8;
+      --teal:       #3ec9c0;
+      --teal-dim:   rgba(62, 201, 192, 0.15);
+      --card-border: rgba(234, 231, 225, 0.08);
+    }
+
+    html {
+      background: var(--bg);
+      color: var(--text);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+    }
+
+    /* Viewport border */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      border: 1px solid #ffffff;
+      z-index: 400;
+      pointer-events: none;
+    }
+
+    /* Film grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      pointer-events: none;
+      opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 220px 220px;
+    }
+
+    /* ─── Header ────────────────────────────── */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 32px 52px;
+      background: linear-gradient(to bottom, rgba(8,8,8,0.88) 0%, transparent 100%);
+      opacity: 0;
+      animation: fadeSlideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+    }
+
+    .site-logo {
+      display: block;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .site-logo img {
+      height: 22px;
+      width: auto;
+      display: block;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      position: relative;
+      padding-bottom: 2px;
+      transition: color 0.25s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--teal);
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-link:hover { color: var(--text); }
+    .nav-link:hover::after { width: 100%; }
+
+    .nav-link.active {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .nav-link.active::after {
+      width: 100%;
+      background: var(--teal);
+    }
+
+    /* ─── Page shell ────────────────────────── */
+    .page {
+      padding-top: 110px;
+      padding-bottom: 80px;
+      min-height: 100vh;
+    }
+
+    /* ─── Page header ───────────────────────── */
+    .page-header {
+      padding: 0 52px 48px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 32px;
+      opacity: 0;
+      animation: fadeSlideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+    }
+
+    .page-title-group {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+    }
+
+    .page-title {
+      font-family: 'Barlow', sans-serif;
+      font-weight: 900;
+      font-size: clamp(38px, 4.5vw, 64px);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--text);
+    }
+
+    .page-count {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 22px;
+      color: var(--text-muted);
+    }
+
+    /* Filter tabs */
+    .filter-tabs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .filter-tab {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      background: transparent;
+      border: 1px solid rgba(234, 231, 225, 0.12);
+      padding: 7px 16px 6px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .filter-tab:hover {
+      color: var(--text-dim);
+      border-color: rgba(234, 231, 225, 0.28);
+    }
+
+    .filter-tab.active {
+      color: var(--bg);
+      background: var(--teal);
+      border-color: var(--teal);
+    }
+
+    /* IMDB button */
+    .imdb-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(245, 197, 24, 0.75);
+      background: transparent;
+      border: 1px solid rgba(245, 197, 24, 0.22);
+      padding: 7px 16px 6px;
+      border-radius: 3px;
+      transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .imdb-btn:hover {
+      color: #080808;
+      background: #F5C518;
+      border-color: #F5C518;
+      box-shadow: 0 0 18px rgba(245, 197, 24, 0.25);
+    }
+
+    .imdb-btn:focus-visible {
+      outline: 2px solid #F5C518;
+      outline-offset: 3px;
+    }
+
+    .imdb-btn:active {
+      background: rgba(245, 197, 24, 0.85);
+    }
+
+    .imdb-btn svg {
+      flex-shrink: 0;
+    }
+
+    /* ─── Divider ────────────────────────────── */
+    .divider {
+      margin: 0 52px 52px;
+      height: 1px;
+      background: linear-gradient(to right, rgba(234,231,225,0.16) 0%, transparent 70%);
+      opacity: 0;
+      animation: fadeIn 0.8s ease 0.7s forwards;
+    }
+
+    /* ─── Project grid ───────────────────────── */
+    .grid-wrap {
+      padding: 0 52px;
+      opacity: 0;
+      animation: fadeSlideUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
+    }
+
+    /* Editorial asymmetric grid */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-auto-flow: dense;
+      gap: 14px;
+    }
+
+    /* Span classes — used instead of nth-child so display:none actually removes cards from flow */
+    .card--s6  { grid-column: span 6;  aspect-ratio: 16/9; }
+    .card--s4  { grid-column: span 4;  aspect-ratio: 16/9; }
+
+    /* ─── Card base ──────────────────────────── */
+    .card {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      border-radius: 4px;
+      background: #111;
+    }
+
+    .card:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 3px;
+    }
+
+    /* Card image */
+    .card-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transform: scale(1.04);
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+    }
+
+    .card:hover .card-img {
+      transform: scale(1.0);
+    }
+
+    /* Color treatment layer */
+    .card-grade {
+      position: absolute;
+      inset: 0;
+      background: rgba(8, 14, 22, 0.25);
+      mix-blend-mode: multiply;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+
+    /* Gradient overlay */
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.86) 0%,
+        rgba(0,0,0,0.38) 40%,
+        rgba(0,0,0,0.0) 70%
+      );
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .card:hover .card-overlay {
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.90) 0%,
+        rgba(0,0,0,0.55) 55%,
+        rgba(0,0,0,0.12) 100%
+      );
+    }
+
+    /* Category badge */
+    .card-badge {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 500;
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.14);
+      padding: 5px 11px 4px;
+      border-radius: 3px;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .card:hover .card-badge {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Year tag */
+    .card-year {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 300;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity 0.35s ease 0.05s, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) 0.05s;
+    }
+
+    .card:hover .card-year {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Card content */
+    .card-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .card-network {
+      display: block;
+      height: 60px;
+      width: auto;
+      filter: brightness(0) invert(1);
+      opacity: 0.55;
+      transform: translateY(4px);
+      transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      align-self: flex-start;
+      max-width: 240px;
+      object-fit: contain;
+      object-position: left center;
+    }
+
+    .card:hover .card-network {
+      opacity: 0.82;
+      transform: translateY(0);
+    }
+
+    .card-title {
+      font-family: 'Barlow', sans-serif;
+      font-weight: 800;
+      font-size: clamp(14px, 1.5vw, 20px);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: #fff;
+      transform: translateY(6px);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .card:hover .card-title {
+      transform: translateY(0);
+    }
+
+    .card-desc {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      letter-spacing: 0.02em;
+      line-height: 1.55;
+      color: rgba(234, 231, 225, 0.62);
+      max-width: 400px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.35s ease 0.07s, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.07s;
+    }
+
+    .card:hover .card-desc {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Teal line on hover */
+    .card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--teal);
+      transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .card:hover::after {
+      width: 100%;
+    }
+
+    /* ─── Stagger card animations ─────────────── */
+    .card { opacity: 0; animation: cardFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .card:nth-child(1)  { animation-delay: 0.60s; }
+    .card:nth-child(2)  { animation-delay: 0.66s; }
+    .card:nth-child(3)  { animation-delay: 0.72s; }
+    .card:nth-child(4)  { animation-delay: 0.78s; }
+    .card:nth-child(5)  { animation-delay: 0.84s; }
+    .card:nth-child(6)  { animation-delay: 0.90s; }
+    .card:nth-child(7)  { animation-delay: 0.96s; }
+    .card:nth-child(8)  { animation-delay: 1.02s; }
+    .card:nth-child(9)  { animation-delay: 1.08s; }
+    .card:nth-child(10) { animation-delay: 1.14s; }
+    .card:nth-child(11) { animation-delay: 1.20s; }
+    .card:nth-child(12) { animation-delay: 1.26s; }
+    .card:nth-child(13) { animation-delay: 1.32s; }
+    .card:nth-child(14) { animation-delay: 1.38s; }
+    .card:nth-child(15) { animation-delay: 1.44s; }
+    .card:nth-child(16) { animation-delay: 1.50s; }
+    .card:nth-child(17) { animation-delay: 1.56s; }
+    .card:nth-child(18) { animation-delay: 1.62s; }
+    .card:nth-child(19) { animation-delay: 1.68s; }
+    .card:nth-child(20) { animation-delay: 1.74s; }
+
+    /* ─── Keyframes ─────────────────────────── */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes fadeSlideDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes cardFadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── Responsive ─────────────────────────── */
+    @media (max-width: 900px) {
+      .header { padding: 24px 28px; }
+      .page-header { padding: 0 28px 36px; flex-direction: column; align-items: flex-start; }
+      .divider { margin: 0 28px 36px; }
+      .grid-wrap { padding: 0 28px; }
+
+      .project-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .card     { grid-column: span 1 !important; aspect-ratio: 16/9 !important; }
+      .card--s6 { grid-column: span 2 !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ───────────────────────────── -->
+  <header class="header">
+    <a href="index.html" class="site-logo" aria-label="John Adams Editor — Home">
+      <img src="../Assets/Branding/logo-hor-03-uai-258x24.png" alt="John Adams Editor">
+    </a>
+
+    <nav aria-label="Primary navigation">
+      <ul class="nav">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="work.html"  class="nav-link active" aria-current="page">Work</a></li>
+        <li><a href="#"          class="nav-link">About</a></li>
+        <li><a href="#"          class="nav-link">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ── Main ─────────────────────────────── -->
+  <main class="page">
+
+    <!-- Page header -->
+    <div class="page-header">
+      <div class="page-title-group">
+        <h1 class="page-title">Work</h1>
+        <span class="page-count">21 projects</span>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:16px;">
+      <a href="http://www.imdb.com/name/nm3958377/" class="imdb-btn" target="_blank" rel="noopener noreferrer" aria-label="View on IMDb">
+        <svg width="28" height="14" viewBox="0 0 28 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="28" height="14" rx="2" fill="#F5C518"/>
+          <text x="50%" y="10.5" dominant-baseline="auto" text-anchor="middle" font-family="Arial Black, sans-serif" font-weight="900" font-size="8.5" fill="#000000" letter-spacing="-0.3">IMDb</text>
+        </svg>
+        View Profile
+      </a>
+      <div class="filter-tabs" role="group" aria-label="Filter by category">
+        <button class="filter-tab active">All</button>
+        <button class="filter-tab">Doc Series</button>
+        <button class="filter-tab">Doc Features</button>
+        <button class="filter-tab">Narrative</button>
+        <button class="filter-tab">Comedy</button>
+        <button class="filter-tab">Commercials</button>
+      </div>
+      </div>
+    </div>
+    
+    <!-- Divider -->
+    <!-- <div class="divider"></div> -->
+
+    <!-- Project grid -->
+    <div class="grid-wrap">
+      <div class="project-grid">
+
+        <article class="card card--s6" data-category="doc-series" tabindex="0" aria-label="Scammed: Getting Even">
+          <img class="card-img" src="../Assets/Images_WorkCards/Scammed_poster.jpg" alt="Scammed: Getting Even">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Tech Crime Doc Series</span>
+          <div class="card-content">
+            <img class="card-network" src="../Assets/Logos_web/Logo_FoxNation.png" alt="Fox Nation">
+            <h2 class="card-title">Scammed: Getting Even</h2>
+            <p class="card-desc">Season 1. Fox Nation. Following victims as they turn the tables on digital scammers.</p>
+          </div>
+        </article>
+
+        <article class="card card--s6" data-category="doc-series" tabindex="0" aria-label="Ice Road Truckers">
+          <img class="card-img" src="../Assets/Images_WorkCards/IceRoadTruckers_poster.jpg" alt="Ice Road Truckers">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Adventure Doc Series</span>
+          <div class="card-content">
+            <img class="card-network" src="../Assets/Logos_web/Logo_HistoryChannel.png" alt="History Channel">
+            <h2 class="card-title">Ice Road Truckers</h2>
+            <p class="card-desc">Season 12. Drivers pushing the limits on the world's most dangerous frozen highways.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="doc-features" tabindex="0" aria-label="Have You Heard Judi Singh?">
+          <img class="card-img" src="../Assets/Images_WorkCards/HYHJS_poster.jpg" alt="Have You Heard Judi Singh?">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Feature Music Biography</span>
+          <div class="card-content">
+            <img class="card-network" src="../Assets/Logos_web/Knowledge_K_blk.png" alt="Knowledge">
+            <h2 class="card-title">Have You Heard Judi Singh?</h2>
+            <p class="card-desc">Knowledge Network. A feature biography uncovering the life of an unsung Canadian music icon.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="doc-series" tabindex="0" aria-label="Shared Planet">
+          <img class="card-img" src="../Assets/Images_WorkCards/SharedPlanet_poster.jpg" alt="Shared Planet">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Nature Mini Series</span>
+          <div class="card-content">
+            <div style="display:flex;align-items:center;gap:14px;">
+              <img class="card-network" src="../Assets/Logos_web/Logo_CBC.png" alt="CBC">
+              <img class="card-network" src="../Assets/Logos_web/Logo_PBS.png" alt="PBS">
+              <img class="card-network" src="../Assets/Logos_web/Logo_Arte.png" alt="Arte">
+            </div>
+            <h2 class="card-title">Shared Planet</h2>
+            <p class="card-desc">CBC, PBS, Arte. People and wildlife thriving together worldwide, revealing sustainable ways humans and nature coexist.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="doc-series" tabindex="0" aria-label="The Age of AI">
+          <img class="card-img" src="../Assets/Images_WorkCards/AgeOfAI_poster.jpg" alt="The Age of AI">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Tech Doc Series</span>
+          <div class="card-content">
+            <img class="card-network" src="../Assets/Logos_web/Logo_Youtube.png" alt="YouTube">
+            <h2 class="card-title">The Age of AI</h2>
+            <p class="card-desc">YouTube Originals. Leo-Nominated, Best Doc Series. Charting AI's transformation of human life.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="doc-series" tabindex="0" aria-label="Pamela's Garden of Eden">
+          <img class="card-img" src="../Assets/Images_WorkCards/PamelasGardenOfEden_poster.jpg" alt="Pamela's Garden of Eden">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Lifestyle Series</span>
+          <div class="card-content">
+            <img class="card-network" src="../Assets/Logos_web/Logo_Discovery.png" alt="Discovery Channel">
+            <h2 class="card-title">Pamela's Garden of Eden</h2>
+            <p class="card-desc">Pamela Anderson invites you into her home and shares her journey.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="doc-series" tabindex="0" aria-label="Small Voices">
+          <img class="card-img" src="../Assets/Images_WorkCards/SmallVoices1_poster.png" alt="Small Voices">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Historical Doc Series</span>
+          <div class="card-content">
+            <img class="card-network" src="../Assets/Logos_web/Knowledge_K_blk.png" alt="Knowledge">
+            <h2 class="card-title">Small Voices</h2>
+            <p class="card-desc">Knowledge Network. Restoring overlooked figures to the record of BC's history.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="doc-series" tabindex="0" aria-label="Big Timber">
+          <img class="card-img" src="../Assets/Images_WorkCards/BigTimber_poster.jpg" alt="Big Timber">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Occupational Doc Series</span>
+          <div class="card-content">
+            <img class="card-network" src="../Assets/Logos_web/Logo_Netflix.png" alt="Netflix">
+            <h2 class="card-title">Big Timber</h2>
+            <p class="card-desc">Netflix &amp; History Channel. Deep in the old-growth forests of BC with the loggers who risk everything.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="doc-series" tabindex="0" aria-label="Wild Bear Rescue">
+          <img class="card-img" src="../Assets/Images_WorkCards/WildBearRescue_poster.jpg" alt="Wild Bear Rescue">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Nature Doc Series</span>
+          <div class="card-content">
+            <div style="display:flex;align-items:center;gap:14px;">
+              <img class="card-network" src="../Assets/Logos_web/Logo_Discovery.png" alt="Discovery">
+              <img class="card-network" src="../Assets/Logos_web/Logo_AnimalPlanet.png" alt="Animal Planet">
+            </div>
+            <h2 class="card-title">Wild Bear Rescue</h2>
+            <p class="card-desc">Discovery &amp; Animal Planet. Leo-Nominated, Best Doc Series. Rehabilitating orphaned cubs back to the wild.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="doc-series" tabindex="0" aria-label="Pets & Pickers">
+          <img class="card-img" src="../Assets/Images_WorkCards/PetsPickers_poster.jpg" alt="Pets &amp; Pickers">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Factual Doc Series</span>
+          <div class="card-content">
+            <div style="display:flex;align-items:center;gap:14px;">
+              <img class="card-network" src="../Assets/Logos_web/Logo_Discovery.png" alt="Discovery">
+              <img class="card-network" src="../Assets/Logos_web/Logo_AnimalPlanet.png" alt="Animal Planet">
+            </div>
+            <h2 class="card-title">Pets &amp; Pickers</h2>
+            <p class="card-desc">Discovery &amp; Animal Planet. Veterinarians and Thrift Collectors team up to help animals and their owners.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="doc-series" tabindex="0" aria-label="The Dog Dudes">
+          <img class="card-img" src="../Assets/Images_WorkCards/DogDudes_poster.jpg" alt="The Dog Dudes">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Lifestyle Series</span>
+          <div class="card-content">
+            <h2 class="card-title">The Dog Dudes</h2>
+            <p class="card-desc">OutTV. Leo-Nominated, Best Reality or Lifestyle Series. Two trainers, a pack of dogs, countless transformations.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="doc-series" tabindex="0" aria-label="Jade Fever">
+          <img class="card-img" src="../Assets/Images_WorkCards/JadeFever_poster.jpg" alt="Jade Fever">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Occupational Doc Series</span>
+          <div class="card-content">
+            <img class="card-network" src="../Assets/Logos_web/Logo_Discovery.png" alt="Discovery">
+            <h2 class="card-title">Jade Fever</h2>
+            <p class="card-desc">Discovery. The Bunce family's relentless pursuit of jade in the remote mountains of northern BC.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="doc-series" tabindex="0" aria-label="Paramedics: Life on the Line">
+          <img class="card-img" src="../Assets/Images_WorkCards/Paramedics_poster.png" alt="Paramedics: Life on the Line">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Medical Doc Series</span>
+          <div class="card-content">
+            <img class="card-network" src="../Assets/Logos_web/Knowledge_K_blk.png" alt="Knowledge">
+            <h2 class="card-title">Paramedics: Life on the Line</h2>
+            <p class="card-desc">Knowledge Network. CCE-Nominated, Best Doc Series. Frontline decisions, life and death.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="doc-series" tabindex="0" aria-label="This Is High School">
+          <img class="card-img" src="../Assets/Images_WorkCards/ThisIsHighSchool_poster.jpg" alt="This Is High School">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Social Doc Series</span>
+          <div class="card-content">
+            <img class="card-network" src="../Assets/Logos_web/Logo_CBC.png" alt="CBC">
+            <h2 class="card-title">This Is High School</h2>
+            <p class="card-desc">CBC. CSA-Nominated, Best Factual Program. An intimate portrait of adolescence today.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="comedy" tabindex="0" aria-label="Convos with My 2 Year-Old">
+          <img class="card-img" src="../Assets/Images_WorkCards/Convos1_poster.jpg" alt="Convos with My 2 Year-Old">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Comedy Series</span>
+          <div class="card-content">
+            <h2 class="card-title">Convos with My 2 Year-Old</h2>
+            <p class="card-desc">YouTube. Re-enacting real toddler conversations with full-grown adults.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="narrative" tabindex="0" aria-label="Mortal Kombat: Legacy">
+          <img class="card-img" src="../Assets/Images_WorkCards/MortalKombat2_poster.jpg" alt="Mortal Kombat: Legacy">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Action Series</span>
+          <div class="card-content">
+            <img class="card-network" src="../Assets/Logos_web/Logo_Warner.png" alt="Warner Bros.">
+            <h2 class="card-title">Mortal Kombat: Legacy</h2>
+            <p class="card-desc">Warner Bros. The live-action adaptation of the iconic fighting franchise.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="doc-features" tabindex="0" aria-label="Bloodied But Unbowed: Uncut">
+          <img class="card-img" src="../Assets/Images_WorkCards/BBU_poster.png" alt="Bloodied But Unbowed: Uncut">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Feature Music Doc</span>
+          <div class="card-content">
+            <img class="card-network" src="../Assets/Logos_web/Knowledge_K_blk.png" alt="Knowledge">
+            <h2 class="card-title">Bloodied But Unbowed: Uncut</h2>
+            <p class="card-desc">Knowledge Network. Audience Choice Award, Berlin PunkFilmFest. The raucous birth of Vancouver's punk scene.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="doc-series" tabindex="0" aria-label="Working People: Labour History in BC">
+          <img class="card-img" src="../Assets/Images_WorkCards/WorkingPeople_poster.jpg" alt="Working People: Labour History in BC">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Historical Doc Series</span>
+          <div class="card-content">
+            <img class="card-network" src="../Assets/Logos_web/Knowledge_K_blk.png" alt="Knowledge">
+            <h2 class="card-title">Working People: Labour History in BC</h2>
+            <p class="card-desc">Knowledge Network. Leo-Nominated, Best Doc Series · Leo-Winner, Best Sound Editing.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="doc-series" tabindex="0" aria-label="Yukon Gold">
+          <img class="card-img" src="../Assets/Images_WorkCards/YukonGold1_poster.jpg" alt="Yukon Gold">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Factual Doc Series</span>
+          <div class="card-content">
+            <img class="card-network" src="../Assets/Logos_web/Logo_NatGeo.png" alt="National Geographic">
+            <h2 class="card-title">Yukon Gold</h2>
+            <p class="card-desc">History Channel &amp; National Geographic. Prospectors chasing fortunes in the Yukon wilderness.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="commercials" tabindex="0" aria-label="Deus Ex: Human Revolution">
+          <img class="card-img" src="../Assets/Images_WorkCards/DeusEx2_poster.jpg" alt="Deus Ex: Human Revolution">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Broadcast Ad · Video Game</span>
+          <div class="card-content">
+            <img class="card-network" src="../Assets/Logos_web/Logo_DDB.png" alt="DDB">
+            <h2 class="card-title">Deus Ex: Human Revolution</h2>
+            <p class="card-desc">Broadcast commercial. Square Enix &amp; Eidos Montréal. Launch campaign for the acclaimed action RPG.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="doc-features" tabindex="0" aria-label="Mareya Shot, Keetha Goal: Make the Shot">
+          <img class="card-img" src="../Assets/Images_WorkCards/MakeTheShot_poster.jpg" alt="Mareya Shot, Keetha Goal: Make the Shot">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Feature Sports Doc</span>
+          <div class="card-content">
+            <h2 class="card-title">Mareya Shot, Keetha Goal: Make the Shot</h2>
+            <p class="card-desc">A feature documentary exploring hockey and British Columbia's South Asian community.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="doc-series" tabindex="0" aria-label="Eat St.">
+          <img class="card-img" src="../Assets/Images_WorkCards/EatStreet_poster.jpg" alt="Eat St.">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Food &amp; Lifestyle Series</span>
+          <div class="card-content">
+            <img class="card-network" src="../Assets/Logos_web/Logo_FoodNetwork.png" alt="Food Network">
+            <h2 class="card-title">Eat St.</h2>
+            <p class="card-desc">Comedian James Cunningham explores North American street food.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const tabs  = document.querySelectorAll('.filter-tab');
+    const cards = [...document.querySelectorAll('.card[data-category]')];
+
+    // Once load animations settle, hand off opacity/transform control to JS
+    setTimeout(() => {
+      cards.forEach(card => {
+        card.style.animation = 'none';
+        card.style.opacity   = '1';
+        card.style.transform = 'none';
+      });
+    }, 2000);
+
+    function filterCards(filter) {
+      const showing = cards.filter(c => filter === 'all' || c.dataset.category === filter);
+      const hiding  = cards.filter(c => filter !== 'all' && c.dataset.category !== filter);
+
+      // Which of the showing cards are already visible (staying put)
+      const staying   = showing.filter(c => c.style.display !== 'none');
+      const appearing = showing.filter(c => c.style.display === 'none');
+
+      // FIRST: record current positions of staying cards
+      const firstRects = new Map();
+      staying.forEach(c => firstRects.set(c, c.getBoundingClientRect()));
+
+      // Fade out the hiding cards
+      hiding.forEach(card => {
+        card.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+        card.style.opacity    = '0';
+        card.style.transform  = 'scale(0.94) translateY(6px)';
+        card.style.pointerEvents = 'none';
+      });
+
+      setTimeout(() => {
+        // Remove hiding cards from grid flow
+        hiding.forEach(c => {
+          c.style.display      = 'none';
+          c.style.transition   = '';
+          c.style.transform    = '';
+          c.style.pointerEvents = '';
+        });
+
+        // Pre-place appearing cards: in flow but invisible
+        appearing.forEach(c => {
+          c.style.display      = '';
+          c.style.opacity      = '0';
+          c.style.transform    = 'translateY(14px)';
+          c.style.transition   = 'none';
+          c.style.pointerEvents = '';
+        });
+
+        // LAST + FLIP: read new positions of staying cards, animate from old
+        requestAnimationFrame(() => {
+          staying.forEach(card => {
+            const f  = firstRects.get(card);
+            const l  = card.getBoundingClientRect();
+            const dx = f.left - l.left;
+            const dy = f.top  - l.top;
+
+            if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) return;
+
+            card.style.transition = 'none';
+            card.style.transform  = `translate(${dx}px, ${dy}px)`;
+
+            requestAnimationFrame(() => {
+              card.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
+              card.style.transform  = 'none';
+            });
+          });
+
+          // Fade in appearing cards with a slight stagger
+          appearing.forEach((card, i) => {
+            setTimeout(() => {
+              card.style.transition = 'opacity 0.35s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+              card.style.opacity    = '1';
+              card.style.transform  = 'none';
+            }, i * 70);
+          });
+        });
+      }, 220);
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const filter = tab.textContent.trim().toLowerCase()
+          .replace(/\s+&\s+/g, '-').replace(/\s+/g, '-');
+        filterCards(filter);
+      });
+    });
+  </script>
+
+</body>
+</html>
