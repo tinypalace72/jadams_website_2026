@@ -487,6 +487,45 @@
       color: var(--text-dim);
     }
 
+    /* IMDB button */
+    .imdb-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(245, 197, 24, 0.75);
+      background: transparent;
+      border: 1px solid rgba(245, 197, 24, 0.22);
+      padding: 7px 16px 6px;
+      border-radius: 3px;
+      transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .imdb-btn:hover {
+      color: #080808;
+      background: #F5C518;
+      border-color: #F5C518;
+      box-shadow: 0 0 18px rgba(245, 197, 24, 0.25);
+    }
+
+    .imdb-btn:focus-visible {
+      outline: 2px solid #F5C518;
+      outline-offset: 3px;
+    }
+
+    .imdb-btn:active {
+      background: rgba(245, 197, 24, 0.85);
+    }
+
+    .imdb-btn svg {
+      flex-shrink: 0;
+    }
+
     /* ─── Keyframes ─────────────────────────── */
     @keyframes fadeIn {
       from { opacity: 0; }
@@ -572,7 +611,7 @@
 
       <div class="about-photo-col">
         <div class="about-photo-wrap">
-          <img class="about-photo" src="assets/branding/myFace4b.png" alt="John Adams, Editor">
+          <img class="about-photo" src="assets/images/jadams_spitfire.JPG" alt="John Adams, Editor">
           <div class="about-photo-grade"></div>
         </div>
       </div>
@@ -595,9 +634,20 @@
 
           <!-- CTA -->
           <div class="about-cta">
-            <a href="assets/resume/JohnAdams_Editor_CV.pdf" class="cta-btn" target="_blank" rel="noopener" aria-label="Download CV">
-              Download CV
-            </a>
+            <!-- <a href="http://www.imdb.com/name/nm3958377/" class="cta-btn" target="_blank" rel="noopener noreferrer" aria-label="View on IMDb">
+              <svg width="28" height="14" viewBox="0 0 28 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect width="28" height="14" rx="2" fill="#F5C518"/>
+                <text x="50%" y="10.5" dominant-baseline="auto" text-anchor="middle" font-family="Arial Black, sans-serif" font-weight="900" font-size="8.5" fill="#000000" letter-spacing="-0.3">IMDb</text>
+               </svg>
+              My IMDB
+            </a> -->
+            <a href="http://www.imdb.com/name/nm3958377/" class="imdb-btn" target="_blank" rel="noopener noreferrer" aria-label="View on IMDb">
+              <svg width="28" height="14" viewBox="0 0 28 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect width="28" height="14" rx="2" fill="#F5C518"/>
+                <text x="50%" y="10.5" dominant-baseline="auto" text-anchor="middle" font-family="Arial Black, sans-serif" font-weight="900" font-size="8.5" fill="#000000" letter-spacing="-0.3">IMDb</text>
+              </svg>
+              Profile
+             </a>
             <a href="contact.html" class="cta-btn-secondary">Get in touch &rarr;</a>
           </div>
         </div>
@@ -606,7 +656,7 @@
     </div>
 
     <!-- Stats row -->
-    <div class="stats-row">
+    <!-- <div class="stats-row">
       <div class="stat">
         <div class="stat-number">20<span>+</span></div>
         <div class="stat-label">Years experience</div>
@@ -623,10 +673,11 @@
         <div class="stat-number">12<span>+</span></div>
         <div class="stat-label">Broadcasters &amp; platforms</div>
       </div>
-    </div>
+    </div> -->
+
 
     <!-- Skills & Tools -->
-    <div class="skills-section">
+    <!-- <div class="skills-section">
 
       <div>
         <p class="skills-col-label">Specialisms</p>
@@ -647,15 +698,14 @@
           <li>Adobe Premiere Pro</li>
           <li>DaVinci Resolve</li>
           <li>Adobe After Effects</li>
-          <li>Pro Tools</li>
-          <li>Final Cut Pro</li>
+          <li>Adobe Photoshop</li>
         </ul>
       </div>
 
-    </div>
+    </div> -->
 
     <!-- Awards & Nominations -->
-    <div class="awards-section">
+    <!-- <div class="awards-section">
       <p class="section-label">Awards &amp; Nominations</p>
       <ul class="awards-list">
         <li class="award-item">
@@ -691,9 +741,8 @@
           <span class="award-year">2012</span>
         </li>
       </ul>
-    </div>
+    </div> -->
 
-    
 
   </main>
 
