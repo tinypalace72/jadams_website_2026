@@ -6,7 +6,11 @@
   <title>John Adams — Editor</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Danfo&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,700;0,800;0,900;1,700&family=Barlow+Condensed:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after {
       margin: 0;
@@ -136,7 +140,7 @@
     .nav {
       display: flex;
       align-items: center;
-      gap: 36px;
+      gap: 18px;
       list-style: none;
     }
 
@@ -185,7 +189,7 @@
     /* ─── Hero content ──────────────────────── */
     .hero {
       position: absolute;
-      top: 46%;
+      top: 42%;
       left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
@@ -195,42 +199,44 @@
 
     /* Main headline */
     .headline {
-      font-family: 'Barlow', sans-serif;
-      font-weight: 800;
-      font-size: clamp(48px, 5.8vw, 86px);
-      letter-spacing: -0.03em;
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(64px, 5.8vw, 86px);
+      letter-spacing: -0.02em;
       color: #ffffff;
-      line-height: 1.05;
-      text-shadow:
+      line-height: 1.0;
+      /* text-shadow:
         0 2px 60px rgba(0, 0, 0, 0.6),
-        0 1px 12px rgba(0, 0, 0, 0.4);
+        0 1px 12px rgba(0, 0, 0, 0.4); */
       opacity: 0;
       animation: fadeSlideUp 1.0s cubic-bezier(0.16, 1, 0.3, 1) 0.85s forwards;
     }
 
     .headline em {
       font-style: italic;
-      font-weight: 700;
+      font-weight: 900;
     }
 
     /* Discipline subtitle */
     .discipline {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 400;
+      font-family: 'Titillium Web', sans-serif;
+      /* font-family: 'Barlow Condensed', sans-serif; */
+      font-weight: 600;
       font-size: 18px;
-      letter-spacing: 0.36em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: rgba(255, 255, 255, 0.75);
-      margin-top: 26px;
-      text-shadow: 0 1px 12px rgba(0,0,0,0.8);
+      margin-top: 80px;
+      /* text-shadow: 0 1px 12px rgba(0,0,0,0.8); */
       opacity: 0;
       animation: fadeIn 0.9s ease 1.3s forwards;
       pointer-events: none;
+      /* padding: 10px 0; */
     }
 
     /* CTA button */
     .cta-wrap {
-      margin-top: 36px;
+      margin-top: 46px;
       display: flex;
       justify-content: center;
       opacity: 0;
@@ -244,11 +250,13 @@
       gap: 10px;
       text-decoration: none;
       font-family: 'Barlow Condensed', sans-serif;
+      /* font-family: 'Titillium Web', sans-serif; */
       font-weight: 400;
       font-size: 14px;
       letter-spacing: 0.28em;
       text-transform: uppercase;
       color: #ffffff;
+      /* opacity: 0.5; */
       background: rgba(0,0,0,0.25);
       backdrop-filter: blur(4px);
       border: 1px solid #ffffff;
@@ -309,7 +317,7 @@
     }
 
     .logo-strip img {
-      height: 60px;
+      height: 30px;
       width: auto;
       filter: brightness(0) invert(1);
       opacity: 0.45;
@@ -406,14 +414,15 @@
 
     <!-- ── Hero ─────────────────────────────── -->
     <div class="hero" aria-label="Editor with tales to tell">
-      <h1 class="headline">Editor</br>with tales to tell.</h1>
+      <h1 class="headline"><span style="font-size: 1.25em;">Editor</span></br><span style="font-size: 0.8em;">with tales to tell.<span></h1>
+      <!-- <h1 class="headline">with tales to tell.</h1> -->
       <p class="discipline">Documentary &nbsp;&nbsp;|&nbsp;&nbsp; Film &amp; TV</p>
-      <div class="cta-wrap">
+      <!-- <div class="cta-wrap">
         <a href="work.html" class="cta-btn" aria-label="View my work">
           View My Work
           <span class="cta-arrow" aria-hidden="true"></span>
         </a>
-      </div>
+      </div> -->
     </div>
 
     <!-- ── Scroll indicator ──────────────────── -->
@@ -426,7 +435,7 @@
     <div class="logo-strip" aria-label="Selected credits">
       <img src="assets/images/logos/Logo_PBS.png"             alt="PBS">
       <img src="assets/images/logos/Logo_Warner.png"          alt="Warner Bros">
-      <img src="assets/images/logos/Logo_Netflix.png"         alt="Netflix">
+      <img src="assets/images/logos/Logo_Netflix.png"         alt="Netflix" style="height: 24px;">
       <img src="assets/images/logos/Logo_NatGeo.png"          alt="National Geographic">
       <img src="assets/images/logos/Logo_Discovery.png"       alt="Discovery Channel">
       <img src="assets/images/logos/Logo_AnimalPlanet.png"    alt="Animal Planet">
