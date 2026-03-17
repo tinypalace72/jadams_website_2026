@@ -667,20 +667,17 @@
     /* Production info grid */
     .modal-info {
       padding: 0px 32px 32px;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
     }
 
     .modal-info-item {
       padding: 14px 0;
       border-bottom: 1px solid var(--card-border);
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      text-align: center;
-      align-items: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: baseline;
     }
 
     /* Remove bottom border from last item */
@@ -693,6 +690,7 @@
       letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--text-muted);
+      text-align: right;
     }
 
     .modal-info-value {
@@ -701,6 +699,7 @@
       font-size: 18px;
       letter-spacing: 0.0em;
       color: var(--text-dim);
+      text-align: left;
     }
 
     .modal-info-value strong {
@@ -787,12 +786,6 @@
 
     <!-- Page header -->
     <div class="page-header">
-      <div class="page-title-group">
-        <!-- <h1 class="page-title">Selected Work</h1>
-        <span class="page-count">22 projects</span> -->
-      </div>
-
-      <div style="display:flex;align-items:center;gap:16px;">
       <a href="http://www.imdb.com/name/nm3958377/" class="imdb-btn" target="_blank" rel="noopener noreferrer" aria-label="View on IMDb">
         <svg width="28" height="14" viewBox="0 0 28 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <rect width="28" height="14" rx="2" fill="#F5C518"/>
@@ -807,7 +800,6 @@
         <button class="filter-tab">Narrative</button>
         <button class="filter-tab">Comedy</button>
         <button class="filter-tab">Commercials</button>
-      </div>
       </div>
     </div>
     
@@ -1121,135 +1113,113 @@
         title:   'Scammed: Getting Even',
         video: 'https://www.youtube.com/embed/4QrkA8qnaO4?si=botmc_a1-Twglj-g',
         info: [
-          { label: 'Genre',              value: 'Tech Crime Documentary Series' },
-          { label: 'Broadcaster',        value: '<strong>Fox Nation</strong>' },
-          { label: 'Season',             value: 'Season 1' },
-          { label: 'Production Company', value: 'Original Productions' },
-          { label: 'Director',           value: 'Robby O\'Neill' },
-          { label: 'Showrunner',         value: 'Patrick Costello' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
-          { label: 'Year',               value: '2025' },
+          { label: 'Streamer',        value: 'Fox Nation' },
+          { label: 'Production Company', value: 'Texas Crew Productions' },
+          { label: 'Showrunner',           value: 'Robby O\'Neill' },
+          { label: 'My Role',               value: 'Editor' },
+          { label: 'Season / Year',               value: 'Season 1 / 2025' },
         ]
       },
       'ice-road-truckers': {
-        eyebrow: 'Adventure · Documentary Series',
+        eyebrow: 'Adventure Doc Series',
         title:   'Ice Road Truckers',
         // poster: 'assets/images/work/IceRoadTruckers_poster.jpg',
         video: 'https://www.youtube.com/embed/XuyaqEcxCek?si=lnkevPnAxnN2NivL',
         info: [
-          { label: 'Genre',              value: 'Adventure Documentary Series' },
-          { label: 'Broadcaster',        value: '<strong>History Channel</strong>' },
-          { label: 'Season',             value: 'Season 12' },
+          { label: 'Broadcaster',        value: 'History Channel' },
           { label: 'Production Company', value: 'Original Productions' },
-          { label: 'Director',           value: 'Placeholder Director' },
-          { label: 'Showrunner',         value: 'Placeholder Showrunner' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
-          { label: 'Year',               value: '2025' },
+          { label: 'Showrunner',         value: 'Patrick Costello' },
+          { label: 'My Role',               value: 'Editor' },
+          { label: 'Season / Year',             value: 'Season 12 / 2025' },
         ]
       },
       'judi-singh': {
-        eyebrow: 'Feature Music Biography',
+        eyebrow: 'Music Bio Feature',
         title:   'Have You Heard Judi Singh?',
         video: 'https://player.vimeo.com/video/1081632398',
         // video: 'https://www.youtube.com/embed/H6hAOVZIQ6c?si=kRjvIiOeBl4cIOfg',
         info: [
-          { label: 'Genre',              value: 'Music Biography' },
-          { label: 'Broadcaster',        value: '<strong>Knowledge Network</strong>' },
-          { label: 'Format',             value: 'Feature Film' },
+          { label: 'Broadcaster',        value: 'Knowledge Network' },
           { label: 'Production Company', value: 'Vivamantra Films' },
           { label: 'Director',           value: 'Baljit Singh' },
           { label: 'Producer',           value: 'Brishkay Ahmed' },
-          { label: 'Role',               value: '<strong>Picture Editor, Co-Writer, Motion Graphics</strong>' },
+          { label: 'My Role',               value: 'Editor, Co-Writer, Motion Graphics' },
           { label: 'Year',               value: '2025' },
         ]
       },
       'shared-planet': {
-        eyebrow: 'Nature · Mini Series',
+        eyebrow: 'Nature Doc Mini Series (4 x 60 min)',
         title:   'Shared Planet',
         video: 'https://player.vimeo.com/video/1037987157',
         info: [
-          { label: 'Genre',              value: 'Nature Documentary Series' },
-          { label: 'Broadcasters',       value: '<strong>CBC · PBS · Arte</strong>' },
-          { label: 'Format',             value: 'Mini Series' },
+          { label: 'Broadcasters',       value: 'CBC (Canada), PBS (US), Arte (Europe)' },
           { label: 'Production Company', value: 'River Road Films' },
+          { label: 'Executive Producer', value: 'Jeffrey Turner' },
           { label: 'Director',           value: 'Geordie Trifa' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
+          { label: 'My Role',            value: 'Editor (Ep. 1: Cities)' },
           { label: 'Year',               value: '2024' },
         ]
       },
       'age-of-ai': {
-        eyebrow: 'Tech · Documentary Series',
+        eyebrow: 'Science/Tech Doc Series (8 x 45mins)',
         title:   'The Age of AI',
         video: 'https://www.youtube.com/embed/5IvQ3fYKnfM?si=jduNDlxNIFzPupr0',
         info: [
-          { label: 'Genre',              value: 'Technology Documentary Series' },
-          { label: 'Broadcaster',        value: '<strong>YouTube Originals</strong>' },
-          { label: 'Format',             value: 'Documentary Series' },
-          { label: 'Production Company', value: 'Placeholder Productions' },
-          { label: 'Director',           value: 'Placeholder Director' },
-          { label: 'Showrunner',         value: 'Placeholder Showrunner' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
-          { label: 'Year',               value: '2019–2020' },
+          { label: 'Streamer',        value: 'YouTube Originals' },
+          { label: 'Production Company', value: 'Network Entertainment, Team Downey' },
+          { label: 'Showrunner',         value: 'Sean Foley' },
+          { label: 'My Role',               value: 'Editor (Eps. 3 & 7)' },
+          { label: 'Year',               value: '2020' },
         ]
       },
       'pamelas-garden': {
-        eyebrow: 'Lifestyle · Documentary Series',
+        eyebrow: 'Lifestyle Doc Series (S2: 8 x 1 hr)',
         title:   'Pamela\'s Garden of Eden',
-        poster:  'assets/images/work/PamelasGardenOfEden_poster.jpg',
+        poster:  'assets/images/work/PamelasGardenOfEden_poster2.jpg',
         info: [
-          { label: 'Genre',              value: 'Lifestyle Documentary Series' },
-          { label: 'Broadcaster',        value: '<strong>Discovery Channel</strong>' },
-          { label: 'Format',             value: 'Documentary Series' },
-          { label: 'Production Company', value: 'Placeholder Productions' },
-          { label: 'Director',           value: 'Placeholder Director' },
-          { label: 'Showrunner',         value: 'Placeholder Showrunner' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
-          { label: 'Year',               value: 'Placeholder Year' },
+          { label: 'Broadcaster',        value: 'HGTV' },
+          { label: 'Production Company', value: 'Fireworks Media' },
+          { label: 'Showrunner',         value: 'Cheryl Binning' },
+          { label: 'My Role',            value: 'Editor' },
+          { label: 'Season / Year',               value: 'Season 1 / 2023' },
         ]
       },
       'small-voices': {
-        eyebrow: 'Historical · Documentary Series',
+        eyebrow: 'Historical Doc Shorts Series (9 x 12 mins)',
         title:   'Small Voices',
         poster:  'assets/images/work/SmallVoices1_poster.png',
         info: [
-          { label: 'Genre',              value: 'Historical Documentary Series' },
-          { label: 'Broadcaster',        value: '<strong>Knowledge Network</strong>' },
-          { label: 'Format',             value: 'Documentary Series' },
-          { label: 'Production Company', value: 'Placeholder Productions' },
-          { label: 'Director',           value: 'Placeholder Director' },
-          { label: 'Showrunner',         value: 'Placeholder Showrunner' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
-          { label: 'Year',               value: 'Placeholder Year' },
+          { label: 'Broadcaster',        value: 'Knowledge Network' },
+          { label: 'Production Company', value: 'Streamline Pictures' },
+          { label: 'Director',           value: 'Melanie Wood' },
+          { label: 'Executive Producer', value: 'Graem Luis' },
+          { label: 'Role',               value: 'Editor, Sound Design, Motion Graphics' },
+          { label: 'Year',               value: '2021' },
         ]
       },
       'big-timber': {
-        eyebrow: 'Occupational · Documentary Series',
+        eyebrow: 'Occupational Doc Series (10 x 1 hr)',
         title:   'Big Timber',
         poster:  'assets/images/work/BigTimber_poster.jpg',
         info: [
-          { label: 'Genre',              value: 'Occupational Documentary Series' },
-          { label: 'Broadcasters',       value: '<strong>Netflix · History Channel</strong>' },
-          { label: 'Format',             value: 'Documentary Series' },
-          { label: 'Production Company', value: 'Placeholder Productions' },
-          { label: 'Director',           value: 'Placeholder Director' },
-          { label: 'Showrunner',         value: 'Placeholder Showrunner' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
-          { label: 'Year',               value: 'Placeholder Year' },
+          { label: 'Broadcasters',       value: 'Netflix · History Channel' },
+          { label: 'Production Company', value: 'Fireworks Media' },
+          { label: 'Showrunner',         value: 'Robert Hardy' },
+          { label: 'My Role',            value: 'Editor' },
+          { label: 'Season / Year',      value: 'Seasons 1-2 / 2020-2021' },
         ]
       },
       'wild-bear-rescue': {
-        eyebrow: 'Nature · Documentary Series',
+        eyebrow: 'Nature Doc Series (12 x 30 mins)',
         title:   'Wild Bear Rescue',
         poster:  'assets/images/work/WildBearRescue_poster.jpg',
         info: [
-          { label: 'Genre',              value: 'Nature Documentary Series' },
-          { label: 'Broadcasters',       value: '<strong>Discovery · Animal Planet</strong>' },
-          { label: 'Format',             value: 'Documentary Series' },
-          { label: 'Production Company', value: 'Placeholder Productions' },
-          { label: 'Director',           value: 'Placeholder Director' },
-          { label: 'Showrunner',         value: 'Placeholder Showrunner' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
-          { label: 'Award',              value: 'Leo-Nominated, Best Doc Series' },
+          { label: 'Broadcasters',       value: 'Discovery · Animal Planet' },
+          { label: 'Production Company', value: 'Omnifilm Entertainment Ltd.' },
+          { label: 'Showrunner',         value: 'Brad Quenville' },
+          { label: 'My Role',               value: 'Editor (4 Eps)' },
+          { label: 'Show Award',         value: 'Leo-Nominated, Best Doc Series' },
+          { label: 'Season / Year',      value: 'Season 3 / 2019' },          
         ]
       },
       'pets-pickers': {
@@ -1258,12 +1228,12 @@
         poster:  'assets/images/work/PetsPickers_poster.jpg',
         info: [
           { label: 'Genre',              value: 'Factual Documentary Series' },
-          { label: 'Broadcasters',       value: '<strong>Discovery · Animal Planet</strong>' },
+          { label: 'Broadcasters',       value: 'Discovery · Animal Planet' },
           { label: 'Format',             value: 'Documentary Series' },
           { label: 'Production Company', value: 'Placeholder Productions' },
           { label: 'Director',           value: 'Placeholder Director' },
           { label: 'Showrunner',         value: 'Placeholder Showrunner' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
+          { label: 'Role',               value: 'Picture Editor' },
           { label: 'Year',               value: 'Placeholder Year' },
         ]
       },
@@ -1273,12 +1243,12 @@
         poster:  'assets/images/work/DogDudes_poster.jpg',
         info: [
           { label: 'Genre',              value: 'Lifestyle Documentary Series' },
-          { label: 'Broadcaster',        value: '<strong>OutTV</strong>' },
+          { label: 'Broadcaster',        value: 'OutTV' },
           { label: 'Format',             value: 'Documentary Series' },
           { label: 'Production Company', value: 'Placeholder Productions' },
           { label: 'Director',           value: 'Placeholder Director' },
           { label: 'Showrunner',         value: 'Placeholder Showrunner' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
+          { label: 'Role',               value: 'Picture Editor' },
           { label: 'Award',              value: 'Leo-Nominated, Best Reality or Lifestyle Series' },
         ]
       },
@@ -1288,12 +1258,12 @@
         poster:  'assets/images/work/JadeFever_poster.jpg',
         info: [
           { label: 'Genre',              value: 'Occupational Documentary Series' },
-          { label: 'Broadcaster',        value: '<strong>Discovery</strong>' },
+          { label: 'Broadcaster',        value: 'Discovery' },
           { label: 'Format',             value: 'Documentary Series' },
           { label: 'Production Company', value: 'Placeholder Productions' },
           { label: 'Director',           value: 'Placeholder Director' },
           { label: 'Showrunner',         value: 'Placeholder Showrunner' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
+          { label: 'Role',               value: 'Picture Editor' },
           { label: 'Year',               value: 'Placeholder Year' },
         ]
       },
@@ -1303,12 +1273,12 @@
         poster:  'assets/images/work/Paramedics_poster.png',
         info: [
           { label: 'Genre',              value: 'Medical Documentary Series' },
-          { label: 'Broadcaster',        value: '<strong>Knowledge Network</strong>' },
+          { label: 'Broadcaster',        value: 'Knowledge Network' },
           { label: 'Format',             value: 'Documentary Series' },
           { label: 'Production Company', value: 'Placeholder Productions' },
           { label: 'Director',           value: 'Placeholder Director' },
           { label: 'Showrunner',         value: 'Placeholder Showrunner' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
+          { label: 'Role',               value: 'Picture Editor' },
           { label: 'Award',              value: 'CCE-Nominated, Best Doc Series' },
         ]
       },
@@ -1318,12 +1288,12 @@
         poster:  'assets/images/work/ThisIsHighSchool_poster.jpg',
         info: [
           { label: 'Genre',              value: 'Social Documentary Series' },
-          { label: 'Broadcaster',        value: '<strong>CBC</strong>' },
+          { label: 'Broadcaster',        value: 'CBC' },
           { label: 'Format',             value: 'Documentary Series' },
           { label: 'Production Company', value: 'Placeholder Productions' },
           { label: 'Director',           value: 'Placeholder Director' },
           { label: 'Showrunner',         value: 'Placeholder Showrunner' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
+          { label: 'Role',               value: 'Picture Editor' },
           { label: 'Award',              value: 'CSA-Nominated, Best Factual Program' },
         ]
       },
@@ -1333,11 +1303,11 @@
         poster:  'assets/images/work/Convos1_poster.jpg',
         info: [
           { label: 'Genre',              value: 'Comedy Series' },
-          { label: 'Broadcaster',        value: '<strong>YouTube</strong>' },
+          { label: 'Broadcaster',        value: 'YouTube' },
           { label: 'Format',             value: 'Short-form Series' },
           { label: 'Production Company', value: 'Placeholder Productions' },
           { label: 'Director',           value: 'Placeholder Director' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
+          { label: 'Role',               value: 'Picture Editor' },
           { label: 'Year',               value: 'Placeholder Year' },
         ]
       },
@@ -1348,12 +1318,12 @@
         // poster:  'assets/images/work/MortalKombat2_poster.jpg',
         info: [
           { label: 'Genre',              value: 'Action Narrative Series' },
-          { label: 'Broadcaster',        value: '<strong>Warner Bros.</strong>' },
+          { label: 'Broadcaster',        value: 'Warner Bros.' },
           { label: 'Format',             value: 'Narrative Series' },
           { label: 'Production Company', value: 'Placeholder Productions' },
           { label: 'Director',           value: 'Placeholder Director' },
           { label: 'Showrunner',         value: 'Placeholder Showrunner' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
+          { label: 'Role',               value: 'Picture Editor' },
           { label: 'Year',               value: 'Placeholder Year' },
         ]
       },
@@ -1364,11 +1334,11 @@
         // poster:  'assets/images/work/BBU_poster.png',
         info: [
           { label: 'Genre',              value: 'Music Documentary Feature' },
-          { label: 'Broadcaster',        value: '<strong>Knowledge Network</strong>' },
+          { label: 'Broadcaster',        value: 'Knowledge Network' },
           { label: 'Format',             value: 'Feature Film' },
           { label: 'Production Company', value: 'Placeholder Productions' },
           { label: 'Director',           value: 'Placeholder Director' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
+          { label: 'Role',               value: 'Picture Editor' },
           { label: 'Award',              value: 'Audience Choice, Berlin PunkFilmFest' },
         ]
       },
@@ -1378,12 +1348,12 @@
         poster:  'assets/images/work/WorkingPeople_poster.jpg',
         info: [
           { label: 'Genre',              value: 'Historical Documentary Series' },
-          { label: 'Broadcaster',        value: '<strong>Knowledge Network</strong>' },
+          { label: 'Broadcaster',        value: 'Knowledge Network' },
           { label: 'Format',             value: 'Documentary Series' },
           { label: 'Production Company', value: 'Placeholder Productions' },
           { label: 'Director',           value: 'Placeholder Director' },
           { label: 'Showrunner',         value: 'Placeholder Showrunner' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
+          { label: 'Role',               value: 'Picture Editor' },
           { label: 'Awards',             value: 'Leo-Nominated Best Doc Series · Leo Winner Best Sound Editing' },
         ]
       },
@@ -1393,12 +1363,12 @@
         poster:  'assets/images/work/YukonGold1_poster.jpg',
         info: [
           { label: 'Genre',              value: 'Factual Documentary Series' },
-          { label: 'Broadcasters',       value: '<strong>History Channel · National Geographic</strong>' },
+          { label: 'Broadcasters',       value: 'History Channel · National Geographic' },
           { label: 'Format',             value: 'Documentary Series' },
           { label: 'Production Company', value: 'Placeholder Productions' },
           { label: 'Director',           value: 'Placeholder Director' },
           { label: 'Showrunner',         value: 'Placeholder Showrunner' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
+          { label: 'Role',               value: 'Picture Editor' },
           { label: 'Year',               value: 'Placeholder Year' },
         ]
       },
@@ -1408,11 +1378,11 @@
         poster:  'assets/images/work/DeusEx2_poster.jpg',
         info: [
           { label: 'Genre',              value: 'Broadcast Commercial' },
-          { label: 'Client',             value: '<strong>Square Enix · Eidos Montréal</strong>' },
+          { label: 'Client',             value: 'Square Enix · Eidos Montréal' },
           { label: 'Agency',             value: 'DDB' },
           { label: 'Format',             value: 'Launch Campaign' },
           { label: 'Director',           value: 'Placeholder Director' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
+          { label: 'Role',               value: 'Picture Editor' },
           { label: 'Year',               value: 'Placeholder Year' },
         ]
       },
@@ -1425,7 +1395,7 @@
           { label: 'Format',             value: 'Feature Film' },
           { label: 'Production Company', value: 'Placeholder Productions' },
           { label: 'Director',           value: 'Placeholder Director' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
+          { label: 'Role',               value: 'Picture Editor' },
           { label: 'Year',               value: 'Placeholder Year' },
         ]
       },
@@ -1435,12 +1405,12 @@
         poster:  'assets/images/work/EatStreet_poster.jpg',
         info: [
           { label: 'Genre',              value: 'Food & Lifestyle Series' },
-          { label: 'Broadcaster',        value: '<strong>Food Network</strong>' },
+          { label: 'Broadcaster',        value: 'Food Network' },
           { label: 'Format',             value: 'Documentary Series' },
           { label: 'Production Company', value: 'Placeholder Productions' },
           { label: 'Director',           value: 'Placeholder Director' },
           { label: 'Showrunner',         value: 'Placeholder Showrunner' },
-          { label: 'Role',               value: '<strong>Picture Editor</strong>' },
+          { label: 'Role',               value: 'Picture Editor' },
           { label: 'Year',               value: 'Placeholder Year' },
         ]
       }
