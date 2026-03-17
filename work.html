@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="assets/branding/jadamseditor_favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Work — John Adams Editor</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,700;0,800;0,900;1,700&family=Barlow+Condensed:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after {
       margin: 0;
@@ -42,7 +44,7 @@
       content: '';
       position: fixed;
       inset: 0;
-      border: 0px solid #ffffff;
+      /* border: 12px solid #ffffff; */
       z-index: 400;
       pointer-events: none;
     }
@@ -263,14 +265,14 @@
     /* Editorial asymmetric grid */
     .project-grid {
       display: grid;
-      grid-template-columns: repeat(12, 1fr);
+      grid-template-columns: repeat(15, 1fr);
       grid-auto-flow: dense;
-      gap: 14px;
+      gap: 28px;
     }
 
     /* Span classes — used instead of nth-child so display:none actually removes cards from flow */
-    .card--s6  { grid-column: span 6;  aspect-ratio: 16/9; }
-    .card--s4  { grid-column: span 4;  aspect-ratio: 16/9; }
+    .card--s6  { grid-column: span 5;  aspect-ratio: 2/3; }
+    .card--s4  { grid-column: span 3;  aspect-ratio: 2/3; }
 
     /* ─── Card base ──────────────────────────── */
     .card {
@@ -294,12 +296,12 @@
       height: 100%;
       object-fit: cover;
       object-position: center;
-      transform: scale(1.04);
+      transform: scale(1.0);
       transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
     }
 
     .card:hover .card-img {
-      transform: scale(1.0);
+      transform: scale(1.04);
     }
 
     /* Color treatment layer */
@@ -323,17 +325,14 @@
         rgba(0,0,0,0.0) 70%
       );
       pointer-events: none;
+      opacity: 0;
       transition: opacity 0.4s ease;
     }
 
     .card:hover .card-overlay {
-      background: linear-gradient(
-        to top,
-        rgba(0,0,0,0.90) 0%,
-        rgba(0,0,0,0.55) 55%,
-        rgba(0,0,0,0.12) 100%
-      );
+      opacity: 1;
     }
+
 
     /* Category badge */
     .card-badge {
@@ -390,7 +389,7 @@
       padding: 20px 22px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 12px;
     }
 
     .card-network {
@@ -398,9 +397,9 @@
       height: 60px;
       width: auto;
       filter: brightness(0) invert(1);
-      opacity: 0.55;
-      transform: translateY(4px);
-      transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.35s ease 0.07s, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.07s;
       align-self: flex-start;
       max-width: 240px;
       object-fit: contain;
@@ -413,17 +412,19 @@
     }
 
     .card-title {
-      font-family: 'Barlow', sans-serif;
-      font-weight: 800;
+      font-family: 'Titillium Web', sans-serif;
+      font-weight: 500;
       font-size: clamp(14px, 1.5vw, 20px);
       letter-spacing: -0.02em;
       line-height: 1.1;
       color: #fff;
+      opacity: 0;
       transform: translateY(6px);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .card:hover .card-title {
+      opacity: 1;
       transform: translateY(0);
     }
 
@@ -452,9 +453,9 @@
       bottom: 0;
       left: 0;
       width: 0;
-      height: 2px;
+      height: 1px;
       background: var(--teal);
-      transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .card:hover::after {
@@ -516,18 +517,22 @@
       from { opacity: 0; }
       to   { opacity: 1; }
     }
-
+    
     .modal-inner {
       position: relative;
       background: #0e0e0e;
       border: 1px solid var(--card-border);
-      border-radius: 6px;
+      border-radius: 12px;
       width: 100%;
       max-width: 860px;
       max-height: 90vh;
       overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
       animation: modalSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
+
+    .modal-box::-webkit-scrollbar { display: none; }
 
     @keyframes modalSlideUp {
       from { opacity: 0; transform: translateY(24px); }
@@ -567,24 +572,26 @@
 
     .modal-header {
       padding: 28px 32px 20px;
+      text-align: center;
     }
 
     .modal-eyebrow {
       display: block;
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 400;
-      font-size: 10px;
+      font-size: 14px;
       letter-spacing: 0.3em;
       text-transform: uppercase;
       color: var(--teal);
-      margin-bottom: 10px;
+      /* margin-bottom: 10px; */
+      padding: 20px 0px 0px;
     }
 
     .modal-title {
-      font-family: 'Barlow', sans-serif;
-      font-weight: 900;
+      font-family: 'Titillium Web', sans-serif;
+      font-weight: 700;
       font-size: clamp(22px, 3vw, 34px);
-      letter-spacing: -0.025em;
+      letter-spacing: -0.02em;
       line-height: 1.05;
       color: var(--text);
     }
@@ -659,10 +666,11 @@
 
     /* Production info grid */
     .modal-info {
-      padding: 28px 32px 32px;
+      padding: 0px 32px 32px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 0;
+      text-align: center;
     }
 
     .modal-info-item {
@@ -671,18 +679,17 @@
       display: flex;
       flex-direction: column;
       gap: 5px;
+      text-align: center;
+      align-items: center;
     }
 
-    .modal-info-item:nth-child(odd)  { padding-right: 32px; }
-    .modal-info-item:nth-child(even) { padding-left: 32px; border-left: 1px solid var(--card-border); }
-
-    /* Remove bottom border from last two items */
-    .modal-info-item:nth-last-child(-n+2) { border-bottom: none; }
+    /* Remove bottom border from last item */
+    .modal-info-item:nth-last-child(-n+1) { border-bottom: none; }
 
     .modal-info-label {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 400;
-      font-size: 9px;
+      font-size: 14px;
       letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--text-muted);
@@ -691,8 +698,8 @@
     .modal-info-value {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 400;
-      font-size: 15px;
-      letter-spacing: 0.03em;
+      font-size: 18px;
+      letter-spacing: 0.0em;
       color: var(--text-dim);
     }
 
@@ -752,7 +759,7 @@
         grid-template-columns: 1fr 1fr;
         gap: 10px;
       }
-      .card     { grid-column: span 1 !important; aspect-ratio: 16/9 !important; }
+      .card     { grid-column: span 1 !important; aspect-ratio: 2/3 !important; }
       .card--s6 { grid-column: span 2 !important; }
     }
   </style>
@@ -781,18 +788,18 @@
     <!-- Page header -->
     <div class="page-header">
       <div class="page-title-group">
-        <h1 class="page-title">Selected Work</h1>
-        <!-- <span class="page-count">22 projects</span> -->
+        <!-- <h1 class="page-title">Selected Work</h1>
+        <span class="page-count">22 projects</span> -->
       </div>
 
       <div style="display:flex;align-items:center;gap:16px;">
-      <!-- <a href="http://www.imdb.com/name/nm3958377/" class="imdb-btn" target="_blank" rel="noopener noreferrer" aria-label="View on IMDb">
+      <a href="http://www.imdb.com/name/nm3958377/" class="imdb-btn" target="_blank" rel="noopener noreferrer" aria-label="View on IMDb">
         <svg width="28" height="14" viewBox="0 0 28 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <rect width="28" height="14" rx="2" fill="#F5C518"/>
           <text x="50%" y="10.5" dominant-baseline="auto" text-anchor="middle" font-family="Arial Black, sans-serif" font-weight="900" font-size="8.5" fill="#000000" letter-spacing="-0.3">IMDb</text>
         </svg>
         My Profile
-      </a> -->
+      </a>
       <div class="filter-tabs" role="group" aria-label="Filter by category">
         <button class="filter-tab active">All</button>
         <button class="filter-tab">Doc Series</button>
@@ -811,43 +818,19 @@
     <div class="grid-wrap">
       <div class="project-grid">
 
-        <article class="card card--s6" data-category="doc-series" data-modal="scammed" tabindex="0" aria-label="Scammed: Getting Even">
-          <img class="card-img" src="assets/images/work/Scammed_poster.jpg" alt="Scammed: Getting Even">
+        <article class="card card--s6" data-category="doc-series" data-modal="age-of-ai" tabindex="0" aria-label="The Age of AI">
+          <img class="card-img" src="assets/images/work/AgeOfAI_poster3.jpg" alt="The Age of AI">
           <div class="card-grade"></div>
           <div class="card-overlay"></div>
-          <span class="card-badge">Tech Crime Doc Series</span>
+          <span class="card-badge">Tech Doc Series</span>
           <div class="card-content">
-            <img class="card-network" src="assets/images/logos/Logo_FoxNation.png" alt="Fox Nation">
-            <h2 class="card-title">Scammed: Getting Even</h2>
-            <p class="card-desc">Season 1. Fox Nation. Following victims as they turn the tables on digital scammers.</p>
+            <img class="card-network" src="assets/images/logos/Logo_Youtube.png" alt="YouTube" style="height:30px;">
+            <h2 class="card-title">The Age of AI</h2>
+            <p class="card-desc">YouTube Originals. Leo-Nominated, Best Doc Series. Charting AI's transformation of human life.</p>
           </div>
         </article>
 
-        <article class="card card--s6" data-category="doc-series" data-modal="ice-road-truckers" tabindex="0" aria-label="Ice Road Truckers">
-          <img class="card-img" src="assets/images/work/IceRoadTruckers_poster.jpg" alt="Ice Road Truckers">
-          <div class="card-grade"></div>
-          <div class="card-overlay"></div>
-          <span class="card-badge">Adventure Doc Series</span>
-          <div class="card-content">
-            <img class="card-network" src="assets/images/logos/Logo_HistoryChannel.png" alt="History Channel">
-            <h2 class="card-title">Ice Road Truckers</h2>
-            <p class="card-desc">Season 12. Drivers pushing the limits on the world's most dangerous frozen highways.</p>
-          </div>
-        </article>
-
-        <article class="card card--s4" data-category="doc-features" data-modal="judi-singh" tabindex="0" aria-label="Have You Heard Judi Singh?">
-          <img class="card-img" src="assets/images/work/HYHJS_poster.jpg" alt="Have You Heard Judi Singh?">
-          <div class="card-grade"></div>
-          <div class="card-overlay"></div>
-          <span class="card-badge">Feature Music Biography</span>
-          <div class="card-content">
-            <img class="card-network" src="assets/images/logos/Knowledge_K_blk.png" alt="Knowledge">
-            <h2 class="card-title">Have You Heard Judi Singh?</h2>
-            <p class="card-desc">Knowledge Network. A feature biography uncovering the life of an unsung Canadian music icon.</p>
-          </div>
-        </article>
-
-        <article class="card card--s4" data-category="doc-series" data-modal="shared-planet" tabindex="0" aria-label="Shared Planet">
+        <article class="card card--s6" data-category="doc-series" data-modal="shared-planet" tabindex="0" aria-label="Shared Planet">
           <img class="card-img" src="assets/images/work/SharedPlanet_poster.jpg" alt="Shared Planet">
           <div class="card-grade"></div>
           <div class="card-overlay"></div>
@@ -863,20 +846,32 @@
           </div>
         </article>
 
-        <article class="card card--s4" data-category="doc-series" data-modal="age-of-ai" tabindex="0" aria-label="The Age of AI">
-          <img class="card-img" src="assets/images/work/AgeOfAI_poster.jpg" alt="The Age of AI">
+        <article class="card card--s6" data-category="doc-series" data-modal="ice-road-truckers" tabindex="0" aria-label="Ice Road Truckers">
+          <img class="card-img" src="assets/images/work/IceRoadTruckers_poster.jpg" alt="Ice Road Truckers">
           <div class="card-grade"></div>
           <div class="card-overlay"></div>
-          <span class="card-badge">Tech Doc Series</span>
+          <span class="card-badge">Adventure Doc Series</span>
           <div class="card-content">
-            <img class="card-network" src="assets/images/logos/Logo_Youtube.png" alt="YouTube" style="height:30px;">
-            <h2 class="card-title">The Age of AI</h2>
-            <p class="card-desc">YouTube Originals. Leo-Nominated, Best Doc Series. Charting AI's transformation of human life.</p>
+            <img class="card-network" src="assets/images/logos/Logo_HistoryChannel.png" alt="History Channel">
+            <h2 class="card-title">Ice Road Truckers</h2>
+            <p class="card-desc">Season 12. Drivers pushing the limits on the world's most dangerous frozen highways.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="doc-series" data-modal="scammed" tabindex="0" aria-label="Scammed: Getting Even">
+          <img class="card-img" src="assets/images/work/Scammed_poster3.jpg" alt="Scammed: Getting Even">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Tech Crime Doc Series</span>
+          <div class="card-content">
+            <img class="card-network" src="assets/images/logos/Logo_FoxNation.png" alt="Fox Nation">
+            <h2 class="card-title">Scammed: Getting Even</h2>
+            <p class="card-desc">Season 1. Fox Nation. Following victims as they turn the tables on digital scammers.</p>
           </div>
         </article>
 
         <article class="card card--s4" data-category="doc-series" data-modal="pamelas-garden" tabindex="0" aria-label="Pamela's Garden of Eden">
-          <img class="card-img" src="assets/images/work/PamelasGardenOfEden_poster.jpg" alt="Pamela's Garden of Eden">
+          <img class="card-img" src="assets/images/work/PamelasGardenOfEden_poster2.jpg" alt="Pamela's Garden of Eden">
           <div class="card-grade"></div>
           <div class="card-overlay"></div>
           <span class="card-badge">Lifestyle Series</span>
@@ -887,32 +882,20 @@
           </div>
         </article>
 
-        <article class="card card--s4" data-category="doc-series" data-modal="small-voices" tabindex="0" aria-label="Small Voices">
-          <img class="card-img" src="assets/images/work/SmallVoices1_poster.png" alt="Small Voices">
+        <article class="card card--s4" data-category="doc-features" data-modal="judi-singh" tabindex="0" aria-label="Have You Heard Judi Singh?">
+          <img class="card-img" src="assets/images/work/HYHJS_poster.jpg" alt="Have You Heard Judi Singh?">
           <div class="card-grade"></div>
           <div class="card-overlay"></div>
-          <span class="card-badge">Historical Doc Series</span>
+          <span class="card-badge">Feature Music Biography</span>
           <div class="card-content">
             <img class="card-network" src="assets/images/logos/Knowledge_K_blk.png" alt="Knowledge">
-            <h2 class="card-title">Small Voices</h2>
-            <p class="card-desc">Knowledge Network. Restoring overlooked figures to the record of BC's history.</p>
-          </div>
-        </article>
-
-        <article class="card card--s4" data-category="doc-series" data-modal="big-timber" tabindex="0" aria-label="Big Timber">
-          <img class="card-img" src="assets/images/work/BigTimber_poster.jpg" alt="Big Timber">
-          <div class="card-grade"></div>
-          <div class="card-overlay"></div>
-          <span class="card-badge">Occupational Doc Series</span>
-          <div class="card-content">
-            <img class="card-network" src="assets/images/logos/Logo_Netflix.png" alt="Netflix" style="height:30px;">
-            <h2 class="card-title">Big Timber</h2>
-            <p class="card-desc">Netflix &amp; History Channel. Deep in the old-growth forests of BC with the loggers who risk everything.</p>
+            <h2 class="card-title">Have You Heard Judi Singh?</h2>
+            <p class="card-desc">Knowledge Network. A feature biography uncovering the life of an unsung Canadian music icon.</p>
           </div>
         </article>
 
         <article class="card card--s4" data-category="doc-series" data-modal="wild-bear-rescue" tabindex="0" aria-label="Wild Bear Rescue">
-          <img class="card-img" src="assets/images/work/WildBearRescue_poster.jpg" alt="Wild Bear Rescue">
+          <img class="card-img" src="assets/images/work/WildBearRescue_poster2.jpg" alt="Wild Bear Rescue">
           <div class="card-grade"></div>
           <div class="card-overlay"></div>
           <span class="card-badge">Nature Doc Series</span>
@@ -941,14 +924,27 @@
           </div>
         </article>
 
-        <article class="card card--s4" data-category="doc-series" data-modal="dog-dudes" tabindex="0" aria-label="The Dog Dudes">
-          <img class="card-img" src="assets/images/work/DogDudes_poster.jpg" alt="The Dog Dudes">
+        <article class="card card--s4" data-category="doc-series" data-modal="small-voices" tabindex="0" aria-label="Small Voices">
+          <img class="card-img" src="assets/images/work/SmallVoices3_poster.jpg" alt="Small Voices">
           <div class="card-grade"></div>
           <div class="card-overlay"></div>
-          <span class="card-badge">Lifestyle Series</span>
+          <span class="card-badge">Historical Doc Series</span>
           <div class="card-content">
-            <h2 class="card-title">The Dog Dudes</h2>
-            <p class="card-desc">OutTV. Leo-Nominated, Best Reality or Lifestyle Series. Two trainers, a pack of dogs, countless transformations.</p>
+            <img class="card-network" src="assets/images/logos/Knowledge_K_blk.png" alt="Knowledge">
+            <h2 class="card-title">Small Voices</h2>
+            <p class="card-desc">Knowledge Network. Restoring overlooked figures to the record of BC's history.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="doc-series" data-modal="big-timber" tabindex="0" aria-label="Big Timber">
+          <img class="card-img" src="assets/images/work/BigTimber_poster2.jpg" alt="Big Timber">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Occupational Doc Series</span>
+          <div class="card-content">
+            <img class="card-network" src="assets/images/logos/Logo_Netflix.png" alt="Netflix" style="height:20px;">
+            <h2 class="card-title">Big Timber</h2>
+            <p class="card-desc">Netflix &amp; History Channel. Deep in the old-growth forests of BC with the loggers who risk everything.</p>
           </div>
         </article>
 
@@ -961,6 +957,18 @@
             <img class="card-network" src="assets/images/logos/Logo_Discovery.png" alt="Discovery">
             <h2 class="card-title">Jade Fever</h2>
             <p class="card-desc">Discovery. The Bunce family's relentless pursuit of jade in the remote mountains of northern BC.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="doc-series" data-modal="yukon-gold" tabindex="0" aria-label="Yukon Gold">
+          <img class="card-img" src="assets/images/work/YukonGold2_poster.jpg" alt="Yukon Gold">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Factual Doc Series</span>
+          <div class="card-content">
+            <img class="card-network" src="assets/images/logos/Logo_NatGeo.png" alt="National Geographic">
+            <h2 class="card-title">Yukon Gold</h2>
+            <p class="card-desc">History Channel &amp; National Geographic. Prospectors chasing fortunes in the Yukon wilderness.</p>
           </div>
         </article>
 
@@ -988,19 +996,20 @@
           </div>
         </article>
 
-        <article class="card card--s4" data-category="comedy" data-modal="convos" tabindex="0" aria-label="Convos with My 2 Year-Old">
-          <img class="card-img" src="assets/images/work/Convos1_poster.jpg" alt="Convos with My 2 Year-Old">
+        <article class="card card--s4" data-category="commercials" data-modal="deus-ex" tabindex="0" aria-label="Deus Ex: Human Revolution">
+          <img class="card-img" src="assets/images/work/DeusEx4_poster.jpg" alt="Deus Ex: Human Revolution">
           <div class="card-grade"></div>
           <div class="card-overlay"></div>
-          <span class="card-badge">Comedy Series</span>
+          <span class="card-badge">Broadcast Ad · Video Game</span>
           <div class="card-content">
-            <h2 class="card-title">Convos with My 2 Year-Old</h2>
-            <p class="card-desc">YouTube. Re-enacting real toddler conversations with full-grown adults.</p>
+            <img class="card-network" src="assets/images/logos/Logo_DDB.png" alt="DDB" style="height:40px;">
+            <h2 class="card-title">Deus Ex: Human Revolution</h2>
+            <p class="card-desc">Broadcast commercial. Square Enix &amp; Eidos Montréal. Launch campaign for the acclaimed action RPG.</p>
           </div>
         </article>
 
         <article class="card card--s4" data-category="narrative" data-modal="mortal-kombat" tabindex="0" aria-label="Mortal Kombat: Legacy">
-          <img class="card-img" src="assets/images/work/MortalKombat2_poster.jpg" alt="Mortal Kombat: Legacy">
+          <img class="card-img" src="assets/images/work/MortalKombat1_poster.jpg" alt="Mortal Kombat: Legacy">
           <div class="card-grade"></div>
           <div class="card-overlay"></div>
           <span class="card-badge">Action Series</span>
@@ -1012,7 +1021,7 @@
         </article>
 
         <article class="card card--s4" data-category="doc-features" data-modal="bloodied-unbowed" tabindex="0" aria-label="Bloodied But Unbowed: Uncut">
-          <img class="card-img" src="assets/images/work/BBU_poster.png" alt="Bloodied But Unbowed: Uncut">
+          <img class="card-img" src="assets/images/work/BBU_poster2.png" alt="Bloodied But Unbowed: Uncut">
           <div class="card-grade"></div>
           <div class="card-overlay"></div>
           <span class="card-badge">Feature Music Doc</span>
@@ -1020,6 +1029,17 @@
             <img class="card-network" src="assets/images/logos/Knowledge_K_blk.png" alt="Knowledge">
             <h2 class="card-title">Bloodied But Unbowed: Uncut</h2>
             <p class="card-desc">Knowledge Network. Audience Choice Award, Berlin PunkFilmFest. The raucous birth of Vancouver's punk scene.</p>
+          </div>
+        </article>
+
+        <article class="card card--s4" data-category="comedy" data-modal="convos" tabindex="0" aria-label="Convos with My 2 Year-Old">
+          <img class="card-img" src="assets/images/work/Convos3_poster.jpg" alt="Convos with My 2 Year-Old">
+          <div class="card-grade"></div>
+          <div class="card-overlay"></div>
+          <span class="card-badge">Comedy Series</span>
+          <div class="card-content">
+            <h2 class="card-title">Convos with My 2 Year-Old</h2>
+            <p class="card-desc">YouTube. Re-enacting real toddler conversations with full-grown adults.</p>
           </div>
         </article>
 
@@ -1035,27 +1055,14 @@
           </div>
         </article>
 
-        <article class="card card--s4" data-category="doc-series" data-modal="yukon-gold" tabindex="0" aria-label="Yukon Gold">
-          <img class="card-img" src="assets/images/work/YukonGold1_poster.jpg" alt="Yukon Gold">
+        <article class="card card--s4" data-category="doc-series" data-modal="dog-dudes" tabindex="0" aria-label="The Dog Dudes">
+          <img class="card-img" src="assets/images/work/DogDudes_poster.jpg" alt="The Dog Dudes">
           <div class="card-grade"></div>
           <div class="card-overlay"></div>
-          <span class="card-badge">Factual Doc Series</span>
+          <span class="card-badge">Lifestyle Series</span>
           <div class="card-content">
-            <img class="card-network" src="assets/images/logos/Logo_NatGeo.png" alt="National Geographic">
-            <h2 class="card-title">Yukon Gold</h2>
-            <p class="card-desc">History Channel &amp; National Geographic. Prospectors chasing fortunes in the Yukon wilderness.</p>
-          </div>
-        </article>
-
-        <article class="card card--s4" data-category="commercials" data-modal="deus-ex" tabindex="0" aria-label="Deus Ex: Human Revolution">
-          <img class="card-img" src="assets/images/work/DeusEx2_poster.jpg" alt="Deus Ex: Human Revolution">
-          <div class="card-grade"></div>
-          <div class="card-overlay"></div>
-          <span class="card-badge">Broadcast Ad · Video Game</span>
-          <div class="card-content">
-            <img class="card-network" src="assets/images/logos/Logo_DDB.png" alt="DDB" style="height:40px;">
-            <h2 class="card-title">Deus Ex: Human Revolution</h2>
-            <p class="card-desc">Broadcast commercial. Square Enix &amp; Eidos Montréal. Launch campaign for the acclaimed action RPG.</p>
+            <h2 class="card-title">The Dog Dudes</h2>
+            <p class="card-desc">OutTV. Leo-Nominated, Best Reality or Lifestyle Series. Two trainers, a pack of dogs, countless transformations.</p>
           </div>
         </article>
 
@@ -1091,11 +1098,14 @@
   <dialog class="project-modal" id="project-modal" aria-modal="true" aria-labelledby="modal-title-text">
     <div class="modal-inner">
       <button class="modal-close" id="modal-close" aria-label="Close">&#x2715;</button>
-      <div class="modal-header">
-        <span class="modal-eyebrow" id="modal-eyebrow"></span>
-        <h2 class="modal-title" id="modal-title-text"></h2>
-      </div>
+      
       <div class="modal-video" id="modal-media"></div>
+
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-title-text"></h2>
+        <span class="modal-eyebrow" id="modal-eyebrow"></span>
+      </div>
+
       <div class="modal-info" id="modal-info"></div>
     </div>
   </dialog>
@@ -1114,11 +1124,11 @@
           { label: 'Genre',              value: 'Tech Crime Documentary Series' },
           { label: 'Broadcaster',        value: '<strong>Fox Nation</strong>' },
           { label: 'Season',             value: 'Season 1' },
-          { label: 'Production Company', value: 'Placeholder Productions' },
-          { label: 'Director',           value: 'Placeholder Director' },
-          { label: 'Showrunner',         value: 'Placeholder Showrunner' },
+          { label: 'Production Company', value: 'Original Productions' },
+          { label: 'Director',           value: 'Robby O\'Neill' },
+          { label: 'Showrunner',         value: 'Patrick Costello' },
           { label: 'Role',               value: '<strong>Picture Editor</strong>' },
-          { label: 'Year',               value: '2023' },
+          { label: 'Year',               value: '2025' },
         ]
       },
       'ice-road-truckers': {
@@ -1134,7 +1144,7 @@
           { label: 'Director',           value: 'Placeholder Director' },
           { label: 'Showrunner',         value: 'Placeholder Showrunner' },
           { label: 'Role',               value: '<strong>Picture Editor</strong>' },
-          { label: 'Year',               value: '2022' },
+          { label: 'Year',               value: '2025' },
         ]
       },
       'judi-singh': {
@@ -1161,11 +1171,10 @@
           { label: 'Genre',              value: 'Nature Documentary Series' },
           { label: 'Broadcasters',       value: '<strong>CBC · PBS · Arte</strong>' },
           { label: 'Format',             value: 'Mini Series' },
-          { label: 'Production Company', value: 'Placeholder Productions' },
-          { label: 'Director',           value: 'Placeholder Director' },
-          { label: 'Showrunner',         value: 'Placeholder Showrunner' },
+          { label: 'Production Company', value: 'River Road Films' },
+          { label: 'Director',           value: 'Geordie Trifa' },
           { label: 'Role',               value: '<strong>Picture Editor</strong>' },
-          { label: 'Year',               value: 'Placeholder Year' },
+          { label: 'Year',               value: '2024' },
         ]
       },
       'age-of-ai': {

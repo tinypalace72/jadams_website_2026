@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="assets/branding/jadamseditor_favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>John Adams — Editor</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,11 +36,12 @@
       overflow: hidden;
     }
 
+    /* Viewport border */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      border: 1px solid #ffffff;
+      /* border: 8px solid #ffffff; */
       z-index: 400;
       pointer-events: none;
     }
@@ -133,7 +135,6 @@
       height: 18px;
       width: auto;
       display: block;
-      /* White logo on transparent header */
     }
 
     /* Primary nav */
@@ -226,7 +227,7 @@
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: rgba(255, 255, 255, 0.75);
-      margin-top: 80px;
+      margin-top: 30px;
       /* text-shadow: 0 1px 12px rgba(0,0,0,0.8); */
       opacity: 0;
       animation: fadeIn 0.9s ease 1.3s forwards;
@@ -414,8 +415,7 @@
 
     <!-- ── Hero ─────────────────────────────── -->
     <div class="hero" aria-label="Editor with tales to tell">
-      <h1 class="headline"><span style="font-size: 1.25em;">Editor</span></br><span style="font-size: 0.8em;">with tales to tell.<span></h1>
-      <!-- <h1 class="headline">with tales to tell.</h1> -->
+      <h1 class="headline"><span style="font-size: 1.25em;">Editor with</br>stories to tell.<span></h1>
       <p class="discipline">Documentary &nbsp;&nbsp;|&nbsp;&nbsp; Film &amp; TV</p>
       <!-- <div class="cta-wrap">
         <a href="work.html" class="cta-btn" aria-label="View my work">
@@ -426,16 +426,16 @@
     </div>
 
     <!-- ── Scroll indicator ──────────────────── -->
-    <div class="scroll-indicator" aria-hidden="true">
+    <!-- <div class="scroll-indicator" aria-hidden="true">
       <span>Explore</span>
       <div class="scroll-line"></div>
-    </div>
+    </div> -->
 
     <!-- ── Logo strip ───────────────────────── -->
     <div class="logo-strip" aria-label="Selected credits">
       <img src="assets/images/logos/Logo_PBS.png"             alt="PBS">
       <img src="assets/images/logos/Logo_Warner.png"          alt="Warner Bros">
-      <img src="assets/images/logos/Logo_Netflix.png"         alt="Netflix" style="height: 24px;">
+      <img src="assets/images/logos/Logo_Netflix.png"         alt="Netflix" style="height: 22px;">
       <img src="assets/images/logos/Logo_NatGeo.png"          alt="National Geographic">
       <img src="assets/images/logos/Logo_Discovery.png"       alt="Discovery Channel">
       <img src="assets/images/logos/Logo_AnimalPlanet.png"    alt="Animal Planet">
