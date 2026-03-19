@@ -10,6 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,700;0,800;0,900;1,700&family=Barlow+Condensed:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wdth,wght@50..200,200..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after {
       margin: 0;
@@ -81,6 +83,15 @@
       display: block;
       text-decoration: none;
       flex-shrink: 0;
+      font-family: 'Boldonse', sans-serif;
+      font-weight: 800;
+      font-size: clamp(11px, 2vw, 16px);
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .site-logo span {
+      color: var(--teal);
     }
 
     .site-logo img {
@@ -98,8 +109,10 @@
 
     .nav-link {
       text-decoration: none;
-      font-family: 'Barlow Condensed', sans-serif;
+      /* font-family: 'Barlow Condensed', sans-serif; */
+      font-family: 'Inconsolata', sans-serif;
       font-weight: 400;
+      font-variation-settings: 'wdth' 75;
       font-size: 14px;
       letter-spacing: 0.25em;
       text-transform: uppercase;
@@ -125,12 +138,33 @@
 
     .nav-link.active {
       color: var(--text);
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .nav-link.active::after {
       width: 100%;
       background: var(--teal);
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      position: relative;
+      z-index: 210;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: #ffffff;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
     }
 
     /* ─── Page shell ────────────────────────── */
@@ -182,8 +216,9 @@
     }
 
     .filter-tab {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 400;
+      font-family: 'Inconsolata', monospace;
+      font-variation-settings: 'wdth' 75;
+      font-weight: 300;
       font-size: 12px;
       letter-spacing: 0.2em;
       text-transform: uppercase;
@@ -213,8 +248,9 @@
       align-items: center;
       gap: 8px;
       text-decoration: none;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 500;
+      font-family: 'Inconsolata', monospace;
+      font-variation-settings: 'wdth' 75;
+      font-weight: 300;
       font-size: 12px;
       letter-spacing: 0.2em;
       text-transform: uppercase;
@@ -761,6 +797,50 @@
       .card     { grid-column: span 1 !important; aspect-ratio: 2/3 !important; }
       .card--s6 { grid-column: span 2 !important; }
     }
+
+    @media (max-width: 640px) {
+      .nav-toggle { display: flex; }
+
+      .header nav {
+        position: fixed;
+        inset: 0;
+        background: rgba(8, 8, 8, 0.97);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        z-index: 205;
+      }
+
+      .nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 36px;
+      }
+
+      .nav-link {
+        font-size: 13px;
+        letter-spacing: 0.3em;
+      }
+
+      .header.nav-open nav {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .header.nav-open .nav-toggle span:nth-child(1) {
+        transform: translateY(6.5px) rotate(45deg);
+      }
+      .header.nav-open .nav-toggle span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+      .header.nav-open .nav-toggle span:nth-child(3) {
+        transform: translateY(-6.5px) rotate(-45deg);
+      }
+    }
   </style>
 </head>
 <body>
@@ -768,8 +848,14 @@
   <!-- ── Header ───────────────────────────── -->
   <header class="header">
     <a href="index.html" class="site-logo" aria-label="John Adams Editor — Home">
-      <img src="assets/branding/logo-hor-03-uai-258x24.png" alt="John Adams Editor">
+      John Adams <span>Editor</span>
     </a>
+
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
     <nav aria-label="Primary navigation">
       <ul class="nav">
@@ -786,12 +872,12 @@
 
     <!-- Page header -->
     <div class="page-header">
-      <a href="http://www.imdb.com/name/nm3958377/" class="imdb-btn" target="_blank" rel="noopener noreferrer" aria-label="View on IMDb">
+      <a href="http://www.imdb.com/name/nm3958377/" class="imdb-btn" target="_blank" rel="noopener noreferrer" aria-label="IMDb Profile">
         <svg width="28" height="14" viewBox="0 0 28 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <rect width="28" height="14" rx="2" fill="#F5C518"/>
           <text x="50%" y="10.5" dominant-baseline="auto" text-anchor="middle" font-family="Arial Black, sans-serif" font-weight="900" font-size="8.5" fill="#000000" letter-spacing="-0.3">IMDb</text>
         </svg>
-        My Profile
+        Profile
       </a>
       <div class="filter-tabs" role="group" aria-label="Filter by category">
         <button class="filter-tab active">All</button>
@@ -1569,6 +1655,21 @@
         const filter = tab.textContent.trim().toLowerCase()
           .replace(/\s+&\s+/g, '-').replace(/\s+/g, '-');
         filterCards(filter);
+      });
+    });
+  </script>
+
+  <script>
+    const navToggle = document.querySelector('.nav-toggle');
+    const header = document.querySelector('.header');
+    navToggle.addEventListener('click', () => {
+      const open = header.classList.toggle('nav-open');
+      navToggle.setAttribute('aria-expanded', String(open));
+    });
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        header.classList.remove('nav-open');
+        navToggle.setAttribute('aria-expanded', 'false');
       });
     });
   </script>

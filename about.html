@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,700;0,800;0,900;1,700&family=Barlow+Condensed:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wdth,wght@50..200,200..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Boldonse&family=Inconsolata:wdth,wght@50..200,200..900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after {
       margin: 0;
@@ -80,6 +82,15 @@
       display: block;
       text-decoration: none;
       flex-shrink: 0;
+      font-family: 'Boldonse', sans-serif;
+      font-weight: 800;
+      font-size: clamp(11px, 2vw, 16px);
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .site-logo span {
+    color: var(--teal);
     }
 
     .site-logo img {
@@ -97,8 +108,10 @@
 
     .nav-link {
       text-decoration: none;
-      font-family: 'Barlow Condensed', sans-serif;
+      /* font-family: 'Barlow Condensed', sans-serif; */
+      font-family: 'Inconsolata', sans-serif;
       font-weight: 400;
+      font-variation-settings: 'wdth' 75;
       font-size: 14px;
       letter-spacing: 0.25em;
       text-transform: uppercase;
@@ -124,12 +137,33 @@
 
     .nav-link.active {
       color: var(--text);
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .nav-link.active::after {
       width: 100%;
       background: var(--teal);
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      position: relative;
+      z-index: 210;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: #ffffff;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
     }
 
     /* ─── Page shell ────────────────────────── */
@@ -143,7 +177,7 @@
       display: grid;
       grid-template-columns: 3fr 2fr;
       gap: 0;
-      min-height: 54vh;
+      min-height: 100vh;
       opacity: 0;
       animation: fadeSlideUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
     }
@@ -200,7 +234,8 @@
     }
 
     .about-eyebrow {
-      font-family: 'Barlow Condensed', sans-serif;
+      /* font-family: 'Barlow Condensed', sans-serif; */
+      font-family: 'Inconsolata', monospace;
       font-weight: 400;
       font-size: 11px;
       letter-spacing: 0.32em;
@@ -210,20 +245,23 @@
     }
 
     .about-name {
-      font-family: 'Playfair Display', serif;
-      font-weight: 900;
-      font-size: clamp(42px, 4.8vw, 72px);
-      letter-spacing: -0.03em;
+      /* font-family: 'Playfair Display', serif; */
+      font-family: 'Boldonse', sans-serif;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: clamp(24px, 3vw, 72px);
+      letter-spacing: 0em;
       line-height: 1.0;
       color: var(--text);
-      margin-bottom: 8px;
+      margin-bottom: 20px;
     }
 
     .about-title {
-      font-family: 'Cormorant Garamond', serif;
+      /* font-family: 'Cormorant Garamond', serif; */
+      font-family: 'Inconsolata', monospace;
       font-style: italic;
       font-weight: 300;
-      font-size: clamp(20px, 2vw, 28px);
+      font-size: clamp(18px, 2vw, 22px);
       color: var(--text-dim);
       margin-bottom: 40px;
     }
@@ -232,15 +270,18 @@
       width: 48px;
       height: 1px;
       background: var(--teal);
+      margin-top: 20px;
       margin-bottom: 36px;
       opacity: 0.6;
     }
 
     .about-bio {
       /* font-family: 'Titillium Web', sans-serif; */
-      font-family: 'Barlow Condensed', sans-serif;
+      /* font-family: 'Barlow Condensed', sans-serif; */
+      font-family: 'Inconsolata', sans-serif;
       font-weight: 300;
       font-size: 18px;
+      font-variation-settings: 'wdth' 75;
       line-height: 1.75;
       color: var(--text-dim);
       max-width: 480px;
@@ -277,9 +318,10 @@
     .stat:last-child  { padding-right: 0; border-right: none; }
 
     .stat-number {
-      font-family: 'Barlow', sans-serif;
+      /* font-family: 'Barlow', sans-serif; */
       /* font-family: 'Titillium Web', sans-serif; */
-      font-weight: 800;
+      font-family: 'Inconsolata', monospace;
+      font-weight: 900;
       font-size: clamp(36px, 4vw, 56px);
       letter-spacing: -0.04em;
       color: var(--text);
@@ -292,7 +334,8 @@
     }
 
     .stat-label {
-      font-family: 'Barlow Condensed', sans-serif;
+      /* font-family: 'Barlow Condensed', sans-serif; */
+      font-family: 'Inconsolata', monospace;
       font-weight: 400;
       font-size: 12px;
       letter-spacing: 0.22em;
@@ -311,7 +354,7 @@
     }
 
     .skills-col-label {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: 'Inconsolata', monospace;
       font-weight: 400;
       font-size: 11px;
       letter-spacing: 0.32em;
@@ -328,7 +371,7 @@
     }
 
     .skills-list li {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: 'Inconsolata', monospace;
       font-weight: 400;
       font-size: 17px;
       letter-spacing: 0.04em;
@@ -372,7 +415,8 @@
     }
 
     .section-label {
-      font-family: 'Barlow Condensed', sans-serif;
+      /* font-family: 'Barlow Condensed', sans-serif; */
+      font-family: 'Inconsolata', monospace;
       font-weight: 400;
       font-size: 11px;
       letter-spacing: 0.32em;
@@ -399,7 +443,8 @@
     }
 
     .award-text {
-      font-family: 'Barlow Condensed', sans-serif;
+      /* font-family: 'Barlow Condensed', sans-serif; */
+      font-family: 'Inconsolata', monospace;
       font-weight: 400;
       font-size: 16px;
       letter-spacing: 0.03em;
@@ -412,7 +457,8 @@
     }
 
     .award-year {
-      font-family: 'Barlow Condensed', sans-serif;
+      /* font-family: 'Barlow Condensed', sans-serif; */
+      font-family: 'Inconsolata', monospace;
       font-weight: 300;
       font-size: 12px;
       letter-spacing: 0.14em;
@@ -435,7 +481,8 @@
       align-items: center;
       gap: 10px;
       text-decoration: none;
-      font-family: 'Barlow Condensed', sans-serif;
+      /* font-family: 'Barlow Condensed', sans-serif; */
+      font-family: 'Inconsolata', monospace;
       font-weight: 400;
       font-size: 14px;
       letter-spacing: 0.28em;
@@ -479,8 +526,8 @@
       align-items: center;
       gap: 8px;
       text-decoration: none;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 400;
+      font-family: 'Inconsolata', monospace;
+      font-weight: 300;
       font-size: 13px;
       letter-spacing: 0.22em;
       text-transform: uppercase;
@@ -498,15 +545,15 @@
       align-items: center;
       gap: 8px;
       text-decoration: none;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 500;
+      font-family: 'Inconsolata', monospace;
+      font-weight: 300;
       font-size: 12px;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: rgba(245, 197, 24, 0.75);
       background: transparent;
       border: 1px solid rgba(245, 197, 24, 0.22);
-      padding: 7px 16px 6px;
+      padding: 7px 16px;
       border-radius: 3px;
       transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
     }
@@ -544,7 +591,8 @@
     }
 
     .footer-copy {
-      font-family: 'Barlow Condensed', sans-serif;
+      /* font-family: 'Barlow Condensed', sans-serif; */
+      font-family: 'Inconsolata', monospace;
       font-weight: 300;
       font-size: 12px;
       letter-spacing: 0.18em;
@@ -652,15 +700,69 @@
       .awards-section { padding: 0 28px 60px; }
       .about-cta { padding: 0 28px 20px; flex-direction: column; align-items: flex-start; }
     }
+
+    @media (max-width: 640px) {
+      .nav-toggle { display: flex; }
+
+      .header nav {
+        position: fixed;
+        inset: 0;
+        background: rgba(8, 8, 8, 0.97);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        z-index: 205;
+      }
+
+      .nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 36px;
+      }
+
+      .nav-link {
+        font-size: 13px;
+        letter-spacing: 0.3em;
+      }
+
+      .header.nav-open nav {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .header.nav-open .nav-toggle span:nth-child(1) {
+        transform: translateY(6.5px) rotate(45deg);
+      }
+      .header.nav-open .nav-toggle span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+      .header.nav-open .nav-toggle span:nth-child(3) {
+        transform: translateY(-6.5px) rotate(-45deg);
+      }
+    }
   </style>
 </head>
 <body>
 
   <!-- ── Header ───────────────────────────── -->
   <header class="header">
-    <a href="index.html" class="site-logo" aria-label="John Adams Editor — Home">
+    <!-- <a href="index.html" class="site-logo" aria-label="John Adams Editor — Home">
       <img src="assets/branding/logo-hor-03-uai-258x24.png" alt="John Adams Editor">
+    </a> -->
+
+    <a href="index.html" class="site-logo" aria-label="John Adams Editor — Home">
+      John Adams <span>Editor</span>
     </a>
+
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
     <nav aria-label="Primary navigation">
       <ul class="nav">
@@ -680,7 +782,7 @@
 
       <div class="about-photo-col">
         <div class="about-photo-wrap">
-          <img class="about-photo" src="assets/images/IMG_0793.png" alt="John Adams, Editor">
+          <img class="about-photo" src="assets/images/IMG_0793.png" alt="Road at Night">
           <div class="about-photo-grade"></div>
         </div>
       </div>
@@ -688,28 +790,21 @@
       <div class="about-bio-col">
         <p class="about-eyebrow">Editor &nbsp;/&nbsp; Documentary &amp; Film</p>
         <h1 class="about-name">John Adams</h1>
-        <p class="about-title">Vancouver-based film & tv editor</p>
+        <!-- <p class="about-title">Vancouver-based film & tv editor</p> -->
         <div class="about-divider"></div>
         <div class="about-bio">
           <p>
-            John is an award-nominated picture editor with over <strong>two decades of experience</strong> cutting documentary series, feature docs, narrative drama, and branded content for the world's leading broadcasters and streaming platforms.
+            An award-nominated picture editor with over two decades of experience cutting documentary series, feature docs, and branded content for the world's leading broadcasters and streaming platforms.
           </p>
           <p>
-            His work spans a wide range of subjects — from <strong>wildlife and nature</strong> to true crime, historical docs, and music biography — with a consistent focus on <strong>character-driven storytelling</strong> and precise, purposeful rhythm in the edit.
+            John's work spans a wide range of subjects — from wildlife and nature to true crime, historical docs, and music biography — with a consistent focus on character-driven storytelling, structural integrity, and style.
           </p>
           <p>
-            Based in <strong>Vancouver, BC</strong>. Available for projects worldwide.
+            Based in Vancouver, BC. Available for projects worldwide.
           </p>
 
           <!-- CTA -->
           <div class="about-cta">
-            <!-- <a href="http://www.imdb.com/name/nm3958377/" class="cta-btn" target="_blank" rel="noopener noreferrer" aria-label="View on IMDb">
-              <svg width="28" height="14" viewBox="0 0 28 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <rect width="28" height="14" rx="2" fill="#F5C518"/>
-                <text x="50%" y="10.5" dominant-baseline="auto" text-anchor="middle" font-family="Arial Black, sans-serif" font-weight="900" font-size="8.5" fill="#000000" letter-spacing="-0.3">IMDb</text>
-               </svg>
-              My IMDB
-            </a> -->
             <a href="http://www.imdb.com/name/nm3958377/" class="imdb-btn" target="_blank" rel="noopener noreferrer" aria-label="View on IMDb">
               <svg width="28" height="14" viewBox="0 0 28 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <rect width="28" height="14" rx="2" fill="#F5C518"/>
@@ -727,16 +822,16 @@
     <!-- Stats row -->
     <div class="stats-row">
       <div class="stat">
-        <div class="stat-number">Book<span>ed</span></div>
         <div class="stat-label">Working Status</div>
+        <div class="stat-number">Book<span>ed</span></div>
       </div>
       <div class="stat">
+        <div class="stat-label">Availability Starting</div>
         <div class="stat-number">Oct. <span>'26</span></div>
-        <div class="stat-label">Available Starting</div>
       </div>
       <div class="stat">
-        <div class="stat-number">Cab<span>bage</span></div>
         <div class="stat-label">Word of the Day</div>
+        <div class="stat-number">Cab<span>bage</span></div>       
       </div>
     </div>
 
@@ -845,6 +940,21 @@
 
     </nav>
   </footer>
+
+  <script>
+    const navToggle = document.querySelector('.nav-toggle');
+    const header = document.querySelector('.header');
+    navToggle.addEventListener('click', () => {
+      const open = header.classList.toggle('nav-open');
+      navToggle.setAttribute('aria-expanded', String(open));
+    });
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        header.classList.remove('nav-open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  </script>
 
 </body>
 </html>

@@ -10,6 +10,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,700;0,800;0,900;1,700&family=Barlow+Condensed:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wdth,wght@50..200,200..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after {
       margin: 0;
@@ -75,7 +77,21 @@
       animation: fadeSlideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
     }
 
-    .site-logo { display: block; text-decoration: none; flex-shrink: 0; }
+    .site-logo {
+      display: block;
+      text-decoration: none;
+      flex-shrink: 0;
+      font-family: 'Boldonse', sans-serif;
+      font-weight: 800;
+      font-size: clamp(11px, 2vw, 16px);
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .site-logo span {
+      color: var(--teal);
+    }
+
     .site-logo img { height: 18px; width: auto; display: block; }
 
     .nav {
@@ -87,8 +103,10 @@
 
     .nav-link {
       text-decoration: none;
-      font-family: 'Barlow Condensed', sans-serif;
+      /* font-family: 'Barlow Condensed', sans-serif; */
+      font-family: 'Inconsolata', sans-serif;
       font-weight: 400;
+      font-variation-settings: 'wdth' 75;
       font-size: 14px;
       letter-spacing: 0.25em;
       text-transform: uppercase;
@@ -110,8 +128,29 @@
     .nav-link:hover { color: var(--text); }
     .nav-link:hover::after { width: 100%; }
 
-    .nav-link.active { color: var(--text); font-weight: 500; }
+    .nav-link.active { color: var(--text); font-weight: 600; }
     .nav-link.active::after { width: 100%; background: var(--teal); }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      position: relative;
+      z-index: 210;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: #ffffff;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+    }
 
     /* ─── Page layout ────────────────────────── */
     .page {
@@ -511,6 +550,50 @@
         gap: 20px;
       }
     }
+
+    @media (max-width: 640px) {
+      .nav-toggle { display: flex; }
+
+      .header nav {
+        position: fixed;
+        inset: 0;
+        background: rgba(8, 8, 8, 0.97);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        z-index: 205;
+      }
+
+      .nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 36px;
+      }
+
+      .nav-link {
+        font-size: 13px;
+        letter-spacing: 0.3em;
+      }
+
+      .header.nav-open nav {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .header.nav-open .nav-toggle span:nth-child(1) {
+        transform: translateY(6.5px) rotate(45deg);
+      }
+      .header.nav-open .nav-toggle span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+      .header.nav-open .nav-toggle span:nth-child(3) {
+        transform: translateY(-6.5px) rotate(-45deg);
+      }
+    }
   </style>
 </head>
 <body>
@@ -518,8 +601,15 @@
   <!-- ── Header ───────────────────────────── -->
   <header class="header">
     <a href="index.html" class="site-logo" aria-label="John Adams Editor — Home">
-      <img src="assets/branding/logo-hor-03-uai-258x24.png" alt="John Adams Editor">
+      John Adams <span>Editor</span>
     </a>
+
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
     <nav aria-label="Primary navigation">
       <ul class="nav">
         <li><a href="index.html"   class="nav-link">Home</a></li>
@@ -631,6 +721,21 @@
         success.style.transition = 'opacity 0.5s ease';
         requestAnimationFrame(() => { success.style.opacity = '1'; });
       }, 300);
+    });
+  </script>
+
+  <script>
+    const navToggle = document.querySelector('.nav-toggle');
+    const header = document.querySelector('.header');
+    navToggle.addEventListener('click', () => {
+      const open = header.classList.toggle('nav-open');
+      navToggle.setAttribute('aria-expanded', String(open));
+    });
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        header.classList.remove('nav-open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
     });
   </script>
 
