@@ -84,7 +84,7 @@
       text-decoration: none;
       flex-shrink: 0;
       font-family: 'Boldonse', sans-serif;
-      font-weight: 800;
+      font-weight: 200;
       font-size: clamp(11px, 2vw, 16px);
       text-transform: uppercase;
       color: #ffffff;
@@ -255,9 +255,9 @@
       font-size: 12px;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: rgba(245, 197, 24, 0.75);
+      color: var(--text-muted);
       background: transparent;
-      border: 1px solid rgba(245, 197, 24, 0.22);
+      border: 1px solid rgba(234, 231, 225, 0.12);
       padding: 7px 16px 7px;
       border-radius: 3px;
       transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
@@ -884,13 +884,6 @@
 
     <!-- Page header -->
     <div class="page-header">
-      <a href="http://www.imdb.com/name/nm3958377/" class="imdb-btn" target="_blank" rel="noopener noreferrer" aria-label="IMDb Profile">
-        <svg width="28" height="14" viewBox="0 0 28 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect width="28" height="14" rx="2" fill="#F5C518"/>
-          <text x="50%" y="10.5" dominant-baseline="auto" text-anchor="middle" font-family="Arial Black, sans-serif" font-weight="900" font-size="8.5" fill="#000000" letter-spacing="-0.3">IMDb</text>
-        </svg>
-        Profile
-      </a>
       <div class="filter-tabs" role="group" aria-label="Filter by category">
         <button class="filter-tab active">All</button>
         <button class="filter-tab">Series</button>
@@ -898,7 +891,14 @@
         <button class="filter-tab">Narrative</button>
         <button class="filter-tab">Comedy</button>
         <button class="filter-tab">Commercials</button>
+        
       </div>
+      <a href="http://www.imdb.com/name/nm3958377/" class="imdb-btn" target="_blank" rel="noopener noreferrer" aria-label="IMDb Profile">
+          My IMDB
+          <svg width="7" height="7" viewBox="0 0 9 9" fill="none" aria-hidden="true" style="opacity:0.6;flex-shrink:0;margin-bottom:1px;">
+            <path d="M1 8L8 1M8 1H3M8 1V6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
     </div>
     
     <!-- Divider -->
