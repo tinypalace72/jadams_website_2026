@@ -82,7 +82,7 @@
       text-decoration: none;
       flex-shrink: 0;
       font-family: 'Boldonse', sans-serif;
-      font-weight: 800;
+      font-weight: 200;
       font-size: clamp(11px, 2vw, 16px);
       text-transform: uppercase;
       color: #ffffff;
@@ -104,7 +104,7 @@
     .nav-link {
       text-decoration: none;
       /* font-family: 'Barlow Condensed', sans-serif; */
-      font-family: 'Inconsolata', sans-serif;
+      font-family: 'Inconsolata', monospace;
       font-weight: 400;
       font-variation-settings: 'wdth' 75;
       font-size: 14px;
@@ -156,7 +156,7 @@
     .page {
       min-height: 100vh;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 2fr 3fr;
       padding-top: 0px;
     }
 
@@ -172,7 +172,8 @@
     }
 
     .contact-eyebrow {
-      font-family: 'Barlow Condensed', sans-serif;
+      /* font-family: 'Barlow Condensed', sans-serif; */
+      font-family: 'Inconsolata', monospace;
       font-weight: 400;
       font-size: 11px;
       letter-spacing: 0.32em;
@@ -182,11 +183,16 @@
     }
 
     .contact-heading {
-      font-family: 'Playfair Display', serif;
-      font-weight: 900;
+      /* font-family: 'Playfair Display', serif; */
+      /* line-height: 0.95; */
+      /* letter-spacing: -0.03em; */
+      font-family: 'Boldonse', sans-serif;
+      text-transform: uppercase;
+      line-height: 1.33;
+      letter-spacing: 0em;
+
+      font-weight: 200;
       font-size: clamp(48px, 5.5vw, 80px);
-      letter-spacing: -0.03em;
-      line-height: 0.95;
       color: var(--text);
       margin-bottom: 36px;
     }
@@ -198,14 +204,15 @@
     }
 
     .contact-intro {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
+      font-family: 'Inconsolata', monospace;
       font-weight: 300;
-      font-size: 20px;
-      line-height: 1.65;
+      font-size: 16px;
+      font-style: italic;
+      font-variation-settings: 'wdth' 90;
+      line-height: 1.75;
       color: var(--text-dim);
       max-width: 360px;
-      margin-bottom: 56px;
+      margin-bottom: 36px;
     }
 
     /* Direct contact details */
@@ -226,7 +233,8 @@
     }
 
     .contact-detail-label {
-      font-family: 'Barlow Condensed', sans-serif;
+      /* font-family: 'Barlow Condensed', sans-serif; */
+      font-family: 'Inconsolata', monospace;
       font-weight: 400;
       font-size: 11px;
       letter-spacing: 0.28em;
@@ -236,9 +244,10 @@
     }
 
     .contact-detail-value {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: 'Inconsolata', monospace;
       font-weight: 400;
       font-size: 16px;
+      font-variation-settings: 'wdth' 90;
       letter-spacing: 0.04em;
       color: var(--text-dim);
       text-decoration: none;
@@ -317,7 +326,7 @@
       font-size: 10px;
       letter-spacing: 0.26em;
       text-transform: uppercase;
-      color: var(--text-muted);
+      color: rgba(234, 231, 225, 0.60);
       margin-bottom: 10px;
       transition: color 0.2s ease;
     }
@@ -412,8 +421,9 @@
     }
 
     .form-note {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: 'Inconsolata', monospace;
       font-weight: 300;
+      font-variation-settings: 'wdth' 75;
       font-size: 12px;
       letter-spacing: 0.08em;
       color: var(--text-muted);
@@ -422,21 +432,21 @@
     .submit-btn {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 400;
-      font-size: 14px;
-      letter-spacing: 0.28em;
+      font-family: 'Inconsolata', monospace;
+      font-variation-settings: 'wdth' 75;
+      font-weight: 300;
+      font-size: 12px;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: #ffffff;
+      color: rgba(234, 231, 225, 0.80);
       background: transparent;
-      border: 1px solid rgba(234, 231, 225, 0.3);
-      padding: 13px 28px 12px;
-      border-radius: 12px;
+      border: 1px solid rgba(234, 231, 225, 0.12);
+      padding: 7px 16px 7px;
+      border-radius: 3px;
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      transition: color 0.3s ease, border-color 0.3s ease;
+      transition: color 0.2s ease, border-color 0.2s ease;
     }
 
     .submit-btn::before {
@@ -450,7 +460,7 @@
     }
 
     .submit-btn:hover {
-      color: #080808;
+      color: var(--bg);
       border-color: var(--teal);
     }
 
@@ -494,7 +504,9 @@
     }
 
     .success-heading {
-      font-family: 'Barlow', sans-serif;
+      /* font-family: 'Barlow', sans-serif; */
+      font-family: 'Boldonse', sans-serif;
+      text-transform: uppercase;
       font-weight: 800;
       font-size: 28px;
       letter-spacing: -0.02em;
@@ -502,10 +514,11 @@
     }
 
     .success-body {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: 'Inconsolata', monospace;
       font-weight: 300;
-      font-size: 17px;
-      line-height: 1.65;
+      font-size: 16px;
+      font-variation-settings: 'wdth' 90;
+      line-height: 1.75;
       color: var(--text-dim);
     }
 

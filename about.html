@@ -248,7 +248,7 @@
     .about-name {
       /* font-family: 'Playfair Display', serif; */
       font-family: 'Boldonse', sans-serif;
-      font-weight: 400;
+      font-weight: 200;
       text-transform: uppercase;
       font-size: clamp(24px, 3vw, 72px);
       letter-spacing: 0em;
@@ -559,6 +559,8 @@
       gap: 8px;
       text-decoration: none;
       font-family: 'Inconsolata', monospace;
+      position: relative;
+      overflow: hidden;
       font-weight: 300;
       font-size: 12px;
       letter-spacing: 0.2em;
@@ -568,14 +570,26 @@
       border: 1px solid rgba(245, 197, 24, 0.22);
       padding: 7px 16px;
       border-radius: 3px;
-      transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+      transition: color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .imdb-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #F5C518;
+      transform: translateX(-102%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: -1;
     }
 
     .imdb-btn:hover {
       color: #080808;
-      background: #F5C518;
       border-color: #F5C518;
-      box-shadow: 0 0 18px rgba(245, 197, 24, 0.25);
+    }
+
+    .imdb-btn:hover::before {
+      transform: translateX(0);
     }
 
     .imdb-btn:focus-visible {
