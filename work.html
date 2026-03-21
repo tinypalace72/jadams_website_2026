@@ -192,21 +192,23 @@
     }
 
     .page-title {
-      font-family: 'Playfair Display', serif;
-      font-weight: 900;
-      font-size: clamp(38px, 4.5vw, 64px);
-      letter-spacing: -0.03em;
-      line-height: 1;
+      font-family: 'Boldonse', sans-serif;
+      font-weight: 200;
+      text-transform: uppercase;
+      font-size: clamp(48px, 5.5vw, 80px);
+      letter-spacing: 0em;
+      line-height: 1.33;
       color: var(--text);
+      margin-top: 36px;
     }
 
-    .page-count {
+    /* .page-count {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       font-weight: 300;
       font-size: 22px;
       color: var(--text-muted);
-    }
+    } */
 
     /* Filter tabs */
     .filter-tabs {
@@ -214,6 +216,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 6px;
+      padding: 12px 0px 0px;
     }
 
     .filter-tab {
@@ -899,15 +902,23 @@
 
     <!-- Page header -->
     <div class="page-header">
-      <div class="filter-tabs" role="group" aria-label="Filter by category">
-        <button class="filter-tab active">All</button>
-        <button class="filter-tab">Series</button>
-        <button class="filter-tab">Features</button>
-        <button class="filter-tab">Narrative</button>
-        <button class="filter-tab">Comedy</button>
-        <button class="filter-tab">Commercials</button>
-        
+      <div style="display:inline flow-root;align-items:flex-end;gap:32px;">
+        <div class="page-title-group">
+          <h1 class="page-title">Selected Work</h1>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-tabs" role="group" aria-label="Filter by category">
+          <button class="filter-tab active">All</button>
+          <button class="filter-tab">Series</button>
+          <button class="filter-tab">Features</button>
+          <button class="filter-tab">Narrative</button>
+          <button class="filter-tab">Comedy</button>
+          <button class="filter-tab">Commercials</button>
+        </div>
       </div>
+
+      <!-- IMDB bttn -->
       <a href="http://www.imdb.com/name/nm3958377/" class="imdb-btn" target="_blank" rel="noopener noreferrer" aria-label="IMDb Profile">
           My IMDB
           <svg width="7" height="7" viewBox="0 0 9 9" fill="none" aria-hidden="true" style="opacity:0.6;flex-shrink:0;margin-bottom:1px;">
