@@ -675,6 +675,9 @@
       <p class="form-label-top">Send a message</p>
 
       <form class="contact-form" id="contactForm" novalidate>
+        <input type="hidden" name="access_key" value="7c116771-a952-4c33-97ba-104a3978ea17">
+        <input type="hidden" name="subject" value="New message from jadamseditor.com">
+        <input type="checkbox" name="botcheck" style="display:none">
 
         <div class="form-row">
           <div class="form-field">
@@ -713,18 +716,25 @@
   </main>
 
   <script>
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      this.style.transition = 'opacity 0.3s ease';
-      this.style.opacity = '0';
-      setTimeout(() => {
-        this.style.display = 'none';
-        const success = document.getElementById('formSuccess');
-        success.classList.add('visible');
-        success.style.opacity = '0';
-        success.style.transition = 'opacity 0.5s ease';
-        requestAnimationFrame(() => { success.style.opacity = '1'; });
-      }, 300);
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: new FormData(this)
+      });
+      const data = await res.json();
+      if (data.success) {
+        this.style.transition = 'opacity 0.3s ease';
+        this.style.opacity = '0';
+        setTimeout(() => {
+          this.style.display = 'none';
+          const success = document.getElementById('formSuccess');
+          success.classList.add('visible');
+          success.style.opacity = '0';
+          success.style.transition = 'opacity 0.5s ease';
+          requestAnimationFrame(() => { success.style.opacity = '1'; });
+        }, 300);
+      }
     });
   </script>
 
