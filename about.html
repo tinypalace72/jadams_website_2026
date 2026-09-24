@@ -226,6 +226,15 @@
       pointer-events: none;
     }
 
+    /* Dot reveal overlay */
+    .about-photo-dots {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
     /* Bio column */
     .about-bio-col {
       display: flex;
@@ -800,6 +809,7 @@
         <div class="about-photo-wrap">
           <img class="about-photo" src="assets/images/jadams_selfie.jpg" alt="J. Adams">
           <div class="about-photo-grade"></div>
+          <canvas class="about-photo-dots" aria-hidden="true"></canvas>
         </div>
       </div>
 
@@ -969,6 +979,120 @@
         navToggle.setAttribute('aria-expanded', 'false');
       });
     });
+  </script>
+
+  <script>
+    (function () {
+      const wrap = document.querySelector('.about-photo-wrap');
+      const canvas = document.querySelector('.about-photo-dots');
+      const nameEl = document.querySelector('.about-name');
+      if (!wrap || !canvas || !nameEl) return;
+
+      const ctx = canvas.getContext('2d');
+      const palette = ['#3ec9c0', '#F5C518', '#8da6b8', '#eae7e1'];
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const revealRadius = 140;
+
+      let dots = [];
+      let dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const mouse = { x: -9999, y: -9999 };
+
+      function measureDotDiameter() {
+        const style = getComputedStyle(nameEl);
+        ctx.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+        const width = ctx.measureText('O').width;
+        return width > 0 ? width : 40;
+      }
+
+      function layout() {
+        const rect = wrap.getBoundingClientRect();
+        const w = rect.width;
+        const h = rect.height;
+        if (w === 0 || h === 0) return;
+
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        const baseDiameter = measureDotDiameter();
+        const spacingX = baseDiameter * 1.02;
+        const spacingY = spacingX * 0.87;
+        const cols = Math.ceil(w / spacingX) + 2;
+        const rows = Math.ceil(h / spacingY) + 2;
+
+        dots = [];
+        for (let r = -1; r < rows; r++) {
+          for (let c = -1; c < cols; c++) {
+            const rowOffset = (r % 2 !== 0) ? spacingX / 2 : 0;
+            const jitterX = (Math.random() - 0.5) * spacingX * 0.28;
+            const jitterY = (Math.random() - 0.5) * spacingY * 0.28;
+            dots.push({
+              x: c * spacingX + rowOffset + jitterX,
+              y: r * spacingY + jitterY,
+              baseRadius: (baseDiameter / 2) * (0.8 + Math.random() * 0.4),
+              scale: 1,
+              color: palette[Math.floor(Math.random() * palette.length)]
+            });
+          }
+        }
+      }
+
+      function render() {
+        const w = canvas.width / dpr;
+        const h = canvas.height / dpr;
+        ctx.clearRect(0, 0, w, h);
+
+        for (const dot of dots) {
+          const dx = dot.x - mouse.x;
+          const dy = dot.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const t = Math.min(1, dist / revealRadius);
+          const target = t * t * (3 - 2 * t);
+
+          dot.scale = reduceMotion ? target : dot.scale + (target - dot.scale) * 0.18;
+
+          if (dot.scale > 0.02) {
+            ctx.beginPath();
+            ctx.fillStyle = dot.color;
+            ctx.arc(dot.x, dot.y, dot.baseRadius * dot.scale, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+        requestAnimationFrame(render);
+      }
+
+      function setMouseFromEvent(e) {
+        const rect = canvas.getBoundingClientRect();
+        const point = e.touches ? e.touches[0] : e;
+        mouse.x = point.clientX - rect.left;
+        mouse.y = point.clientY - rect.top;
+      }
+
+      function resetMouse() {
+        mouse.x = -9999;
+        mouse.y = -9999;
+      }
+
+      canvas.addEventListener('mousemove', setMouseFromEvent);
+      canvas.addEventListener('mouseleave', resetMouse);
+      canvas.addEventListener('touchmove', setMouseFromEvent, { passive: true });
+      canvas.addEventListener('touchend', resetMouse);
+
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(layout, 150);
+      });
+
+      layout();
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(layout);
+      }
+      requestAnimationFrame(render);
+    })();
   </script>
 
 </body>
