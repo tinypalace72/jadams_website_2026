@@ -1080,8 +1080,10 @@
           if (dot.scale > 0.02) {
             ctx.beginPath();
             ctx.fillStyle = dot.color;
+            ctx.globalAlpha = 0.9;
             ctx.arc(dot.x, dot.y, dot.baseRadius * dot.scale, 0, Math.PI * 2);
             ctx.fill();
+            ctx.globalAlpha = 1;
           }
         }
 
