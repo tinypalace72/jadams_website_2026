@@ -1022,7 +1022,8 @@
         const largeDiameter = diameters[2];
         const minGap = 10;
         const jitter = 5; // bounded so worst-case neighbor gap never drops below minGap
-        const cellSize = largeDiameter + minGap + jitter * 2;
+        const densityScale = Math.sqrt(1.5); // spacing multiplier for a 33% reduction in dot count
+        const cellSize = (largeDiameter + minGap + jitter * 2) * densityScale;
         const cols = Math.ceil(w / cellSize) + 2;
         const rows = Math.ceil(h / cellSize) + 2;
 
