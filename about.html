@@ -1095,7 +1095,7 @@
           vividStrength = reduceMotion ? target : vividStrength + (target - vividStrength) * 0.06;
 
           if (vividStrength > 0.01) {
-            const maskImage = `radial-gradient(circle at ${lastMouse.x}px ${lastMouse.y}px, black 0%, black ${revealRadius * 0.6}px, transparent ${revealRadius}px)`;
+            const maskImage = `radial-gradient(circle at ${lastMouse.x}px ${lastMouse.y}px, black 0%, black ${revealRadius * 0.468}px, transparent ${revealRadius}px)`;
             vivid.style.webkitMaskImage = maskImage;
             vivid.style.maskImage = maskImage;
             vivid.style.opacity = String(vividStrength);
